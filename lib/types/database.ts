@@ -1,6 +1,6 @@
 export type UserRole = "user" | "admin";
 export type ProfileType = "general" | "curioso" | "terapeuta" | "facilitador";
-export type AccessLevel = "all" | "general" | "curioso" | "terapeuta" | "facilitador";
+export type AccessLevel = "all" | "premium" | "general" | "curioso" | "terapeuta" | "facilitador";
 
 export type Database = {
   public: {
@@ -14,6 +14,7 @@ export type Database = {
           role: UserRole;
           perfil_tipo: ProfileType;
           aprobado: boolean;
+          is_premium: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -25,6 +26,7 @@ export type Database = {
           role?: UserRole;
           perfil_tipo?: ProfileType;
           aprobado?: boolean;
+          is_premium?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -36,6 +38,7 @@ export type Database = {
           role?: UserRole;
           perfil_tipo?: ProfileType;
           aprobado?: boolean;
+          is_premium?: boolean;
           created_at?: string;
           updated_at?: string;
         };

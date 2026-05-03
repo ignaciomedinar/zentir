@@ -299,7 +299,7 @@ export default async function HomePage() {
 
       <footer className="py-8 text-center text-sm text-[#737373] border-t border-[#cdcdcd]">
         <Image src="/images/logo.png" alt="Zentir" width={80} height={28} className="mx-auto mb-4 opacity-60" />
-        <p>© {new Date().getFullYear()} Zentir. Todos los derechos reservados.</p>
+        <p suppressHydrationWarning>© {new Date().getFullYear()} Zentir. Todos los derechos reservados.</p>
       </footer>
     </div>
   );

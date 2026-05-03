@@ -19,7 +19,8 @@ interface Category {
 }
 
 const ACCESS_LEVELS = [
-  { value: "all", label: "Todos los usuarios" },
+  { value: "all", label: "Todos los usuarios (free)" },
+  { value: "premium", label: "⭐ Solo usuarios premium" },
   { value: "general", label: "Público general" },
   { value: "curioso", label: "Curiosos/as" },
   { value: "terapeuta", label: "Terapeutas" },

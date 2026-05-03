@@ -58,9 +58,16 @@ export default async function BibliotecaPage({
       <main className="max-w-6xl mx-auto w-full px-4 py-10 flex-1">
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-semibold text-stone-800">Mi biblioteca</h1>
-          <Badge variant="secondary">
-            {perfilLabels[profile.perfil_tipo] ?? profile.perfil_tipo}
-          </Badge>
+          <div className="flex items-center gap-2">
+            {profile.is_premium && (
+              <Badge className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100">
+                ⭐ Premium
+              </Badge>
+            )}
+            <Badge variant="secondary">
+              {perfilLabels[profile.perfil_tipo] ?? profile.perfil_tipo}
+            </Badge>
+          </div>
         </div>
         <p className="text-stone-500 mb-8">
           Hola, {profile.nombre}. Aquí está el contenido disponible para vos.

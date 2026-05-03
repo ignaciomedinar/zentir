@@ -4,10 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, UserCheck, UserX, ShieldCheck } from "lucide-react";
+import { MoreHorizontal, UserCheck, UserX, ShieldCheck, Star, StarOff } from "lucide-react";
 import { toast } from "sonner";
 import type { UserRole } from "@/lib/types/database";
 
@@ -18,6 +17,7 @@ interface UserProfile {
   apellido: string;
   perfil_tipo: string;
   aprobado: boolean;
+  is_premium: boolean;
   role: string;
   created_at: string;
 }
@@ -33,7 +33,7 @@ export function UsersTable({ usuarios }: { usuarios: UserProfile[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
 
-  async function updateUser(userId: string, updates: { aprobado?: boolean; role?: UserRole }) {
+  async function updateUser(userId: string, updates: { aprobado?: boolean; role?: UserRole; is_premium?: boolean }) {
     setLoading(userId);
     const supabase = createClient();
     const { error } = await supabase
@@ -65,6 +65,7 @@ export function UsersTable({ usuarios }: { usuarios: UserProfile[] }) {
           <TableRow className="bg-stone-50">
             <TableHead>Nombre</TableHead>
             <TableHead>Perfil</TableHead>
+            <TableHead>Plan</TableHead>
             <TableHead>Estado</TableHead>
             <TableHead>Registro</TableHead>
             <TableHead className="w-16"></TableHead>
@@ -82,6 +83,18 @@ export function UsersTable({ usuarios }: { usuarios: UserProfile[] }) {
                 <Badge variant="outline" className="text-xs">
                   {PERFIL_LABELS[u.perfil_tipo] ?? u.perfil_tipo}
                 </Badge>
+              </TableCell>
+              <TableCell>
+                {u.is_premium ? (
+                  <Badge className="text-xs bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100">
+                    <Star className="w-3 h-3 mr-1 fill-amber-500 text-amber-500" />
+                    Premium
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-xs text-stone-400">
+                    Free
+                  </Badge>
+                )}
               </TableCell>
               <TableCell>
                 <Badge
@@ -103,6 +116,21 @@ export function UsersTable({ usuarios }: { usuarios: UserProfile[] }) {
                     <MoreHorizontal className="w-4 h-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    {u.is_premium ? (
+                      <DropdownMenuItem
+                        onClick={() => updateUser(u.user_id, { is_premium: false })}
+                      >
+                        <StarOff className="w-4 h-4 mr-2 text-stone-400" />
+                        Quitar premium
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem
+                        onClick={() => updateUser(u.user_id, { is_premium: true })}
+                      >
+                        <Star className="w-4 h-4 mr-2 text-amber-500" />
+                        Dar acceso premium
+                      </DropdownMenuItem>
+                    )}
                     {u.aprobado ? (
                       <DropdownMenuItem
                         className="text-red-600"
