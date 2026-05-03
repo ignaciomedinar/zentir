@@ -1,65 +1,102 @@
-import Image from "next/image";
+import { createClient } from "@/lib/supabase/server";
+import { Header } from "@/components/shared/header";
+import { ButtonLink } from "@/components/ui/button-link";
 
-export default function Home() {
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  let isAdmin = false;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("user_id", user.id)
+      .single();
+    isAdmin = profile?.role === "admin";
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen flex flex-col">
+      <Header user={user} isAdmin={isAdmin} />
+
+      {/* Hero */}
+      <section className="flex-1 flex flex-col items-center justify-center text-center px-4 py-24 bg-linear-to-b from-stone-100 to-stone-50">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <p className="text-sm uppercase tracking-widest text-stone-500 font-medium">Zentir</p>
+          <h1 className="text-4xl md:text-6xl font-light text-stone-800 leading-tight">
+            Un espacio para
+            <span className="font-semibold"> sentir, sanar</span> y crecer
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-stone-500 max-w-xl mx-auto">
+            Retiros, meditación y prácticas de bienestar para quienes buscan reconectar consigo mismos.
+            Accedé a materiales exclusivos diseñados para tu camino.
           </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+            {user ? (
+              <ButtonLink size="lg" href="/biblioteca">Ir a mi biblioteca</ButtonLink>
+            ) : (
+              <>
+                <ButtonLink size="lg" href="/register">Comenzar ahora</ButtonLink>
+                <ButtonLink size="lg" variant="outline" href="/login">Ya tengo cuenta</ButtonLink>
+              </>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Features */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-semibold text-stone-800 text-center mb-12">
+            ¿Qué encontrás en Zentir?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🧘",
+                title: "Guías de meditación",
+                desc: "PDFs y presentaciones con prácticas guiadas para distintos niveles y necesidades.",
+              },
+              {
+                icon: "🌿",
+                title: "Materiales de retiro",
+                desc: "Recursos exclusivos de nuestros retiros: ejercicios, reflexiones y herramientas prácticas.",
+              },
+              {
+                icon: "✨",
+                title: "Contenido personalizado",
+                desc: "El material que ves está adaptado a tu perfil: quién sos y qué buscás.",
+              },
+            ].map((f) => (
+              <div key={f.title} className="text-center space-y-3 p-6 rounded-xl hover:bg-stone-50 transition-colors">
+                <div className="text-4xl">{f.icon}</div>
+                <h3 className="font-semibold text-stone-800">{f.title}</h3>
+                <p className="text-stone-500 text-sm">{f.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 px-4 bg-stone-800 text-white text-center">
+        <div className="max-w-2xl mx-auto space-y-4">
+          <h2 className="text-3xl font-light">Empezá tu camino hoy</h2>
+          <p className="text-stone-300">
+            Registrate gratis y accedé a contenido diseñado para tu bienestar.
+          </p>
+          {!user && (
+            <ButtonLink size="lg" variant="secondary" href="/register" className="mt-4">
+              Crear cuenta gratuita
+            </ButtonLink>
+          )}
+        </div>
+      </section>
+
+      <footer className="py-8 text-center text-sm text-stone-400 border-t border-stone-200 bg-white">
+        <p>© {new Date().getFullYear()} Zentir. Todos los derechos reservados.</p>
+      </footer>
     </div>
   );
 }
