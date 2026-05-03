@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Sora, Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"] });
+const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Zentir — Retiros y Bienestar",
@@ -17,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${geist.className} antialiased bg-stone-50`}>
+      <body className={`${sora.variable} ${inter.variable} font-inter antialiased bg-white text-black`}>
         {children}
         <Toaster richColors position="top-right" />
       </body>
