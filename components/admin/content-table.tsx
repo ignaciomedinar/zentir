@@ -15,15 +15,9 @@ interface ContentItem {
   titulo: string;
   file_name: string;
   file_size: number;
-  nivel_acceso: string;
   created_at: string;
-  categories?: { nombre: string } | null;
+  content_retiros?: { retiros: { nombre: string } | null }[];
 }
-
-const ACCESS_LABELS: Record<string, string> = {
-  all: "Todos",
-  terapeuta: "Solo terapeutas",
-};
 
 function formatBytes(bytes: number) {
   if (bytes === 0) return "0 B";
@@ -75,51 +69,56 @@ export function ContentTable({ contenido }: { contenido: ContentItem[] }) {
           <TableHeader>
             <TableRow className="bg-stone-50">
               <TableHead>Título</TableHead>
-              <TableHead>Categoría</TableHead>
-              <TableHead>Acceso</TableHead>
+              <TableHead>Visible para</TableHead>
               <TableHead>Tamaño</TableHead>
               <TableHead>Fecha</TableHead>
               <TableHead className="w-16"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {contenido.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>
-                  <div>
-                    <p className="font-medium text-stone-700 text-sm">{item.titulo}</p>
-                    <p className="text-xs text-stone-400">{item.file_name}</p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm text-stone-500">
-                    {item.categories?.nombre ?? "—"}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Badge variant="outline" className="text-xs">
-                    {ACCESS_LABELS[item.nivel_acceso] ?? item.nivel_acceso}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-sm text-stone-500">
-                  {formatBytes(item.file_size)}
-                </TableCell>
-                <TableCell className="text-sm text-stone-500">
-                  {new Date(item.created_at).toLocaleDateString("es-MX")}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => setConfirmId(item.id)}
-                    disabled={deleting === item.id}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {contenido.map((item) => {
+              const retiroNombres = (item.content_retiros ?? [])
+                .map((cr) => cr.retiros?.nombre)
+                .filter((n): n is string => !!n);
+              return (
+                <TableRow key={item.id}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium text-stone-700 text-sm">{item.titulo}</p>
+                      <p className="text-xs text-stone-400">{item.file_name}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {retiroNombres.length ? (
+                      <div className="flex flex-wrap gap-1">
+                        {retiroNombres.map((n) => (
+                          <Badge key={n} variant="outline" className="text-xs">{n}</Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <Badge variant="outline" className="text-xs">Todos</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-sm text-stone-500">
+                    {formatBytes(item.file_size)}
+                  </TableCell>
+                  <TableCell className="text-sm text-stone-500">
+                    {new Date(item.created_at).toLocaleDateString("es-MX")}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => setConfirmId(item.id)}
+                      disabled={deleting === item.id}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

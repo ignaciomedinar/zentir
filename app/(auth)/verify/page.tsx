@@ -11,6 +11,7 @@ import { toast } from "sonner";
 function VerifyContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "";
+  const next = searchParams.get("next") ?? "/biblioteca";
   const [resending, setResending] = useState(false);
   const [resent, setResent] = useState(false);
 
@@ -25,7 +26,7 @@ function VerifyContent() {
       type: "signup",
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
     setResending(false);

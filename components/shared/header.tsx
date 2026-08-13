@@ -6,14 +6,21 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
+import { LanguageSwitcher } from "@/components/shared/language-switcher";
 
 interface HeaderProps {
   user?: { email?: string } | null;
   isAdmin?: boolean;
+  locale?: Locale;
+  onLocaleChange?: (locale: Locale) => void;
+  variant?: "light" | "dark";
 }
 
-export function Header({ user, isAdmin }: HeaderProps) {
+export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant = "light" }: HeaderProps) {
   const router = useRouter();
+  const t = dictionaries[locale].header;
+  const dark = variant === "dark";
 
   async function handleLogout() {
     const supabase = createClient();
@@ -22,40 +29,56 @@ export function Header({ user, isAdmin }: HeaderProps) {
     router.refresh();
   }
 
+  const linkClass = dark
+    ? "text-sm text-white/70 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors"
+    : "text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors";
+
   return (
-    <header className="border-b border-[#cdcdcd] bg-background sticky top-0 z-50">
+    <header
+      className={`sticky top-0 z-50 border-b ${
+        dark ? "bg-[#1c1c1c] border-white/10" : "bg-background border-[#cdcdcd]"
+      }`}
+    >
       <div className="max-w-300 mx-auto px-6 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <Image src="/images/logo.png" alt="Zentir" width={72} height={24} className="h-7 w-auto" />
+          <Image
+            src="/images/logo.png"
+            alt="Zentir"
+            width={72}
+            height={24}
+            className={`h-7 w-auto ${dark ? "brightness-0 invert" : ""}`}
+          />
         </Link>
         <nav className="flex items-center gap-2">
           {user ? (
             <>
               {isAdmin && (
-                <ButtonLink variant="ghost" href="/admin" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors">
-                  Panel Admin
+                <ButtonLink variant="ghost" href="/admin" className={linkClass}>
+                  {t.panelAdmin}
                 </ButtonLink>
               )}
-              <ButtonLink variant="ghost" href="/biblioteca" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors flex items-center gap-1">
+              <ButtonLink variant="ghost" href="/biblioteca" className={`${linkClass} flex items-center gap-1`}>
                 <User className="w-3.5 h-3.5" />
-                Biblioteca
+                {t.biblioteca}
               </ButtonLink>
-              <button
-                onClick={handleLogout}
-                className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors"
-              >
-                Salir
+              <button onClick={handleLogout} className={linkClass}>
+                {t.salir}
               </button>
             </>
           ) : (
             <>
-              <ButtonLink variant="ghost" href="/login" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors">
-                Ingresar
+              <ButtonLink variant="ghost" href="/login" className={linkClass}>
+                {t.ingresar}
               </ButtonLink>
               <ButtonLink href="/register" className="text-sm bg-zentir hover:bg-zentir/90 text-white px-4 py-1.5 rounded-full transition-colors">
-                Registrarse
+                {t.registrarse}
               </ButtonLink>
             </>
+          )}
+          {onLocaleChange && (
+            <div className={`ml-2 pl-2 border-l ${dark ? "border-white/10" : "border-[#e5e0da]"}`}>
+              <LanguageSwitcher locale={locale} onChange={onLocaleChange} />
+            </div>
           )}
         </nav>
       </div>

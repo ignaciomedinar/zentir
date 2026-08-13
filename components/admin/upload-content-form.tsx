@@ -7,39 +7,39 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, X, FileText } from "lucide-react";
 import { toast } from "sonner";
 
-interface Category {
+interface Retiro {
   id: string;
   nombre: string;
-  slug: string;
 }
 
-const ACCESS_LEVELS = [
-  { value: "all", label: "Todos los usuarios" },
-  { value: "terapeuta", label: "Solo terapeutas Zentir" },
-];
-
 export function UploadContentForm({
-  categories,
+  retiros,
   retiroId,
 }: {
-  categories: Category[];
+  retiros: Retiro[];
   retiroId?: string;
 }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [form, setForm] = useState({
-    titulo: "",
-    descripcion: "",
-    categoria_id: "",
-    nivel_acceso: "all",
-  });
+  const [form, setForm] = useState({ titulo: "", descripcion: "" });
+  // undefined = usar retiroId fijo (subida desde el detalle de un retiro)
+  const [selectedRetiros, setSelectedRetiros] = useState<string[]>([]);
+
+  function toggleTodos() {
+    setSelectedRetiros([]);
+  }
+
+  function toggleRetiro(id: string) {
+    setSelectedRetiros((prev) =>
+      prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
+    );
+  }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -79,28 +79,42 @@ export function UploadContentForm({
     }
 
     // Guardar metadata en DB
-    const { error: dbError } = await supabase.from("content").insert({
-      titulo: form.titulo.trim(),
-      descripcion: form.descripcion.trim() || null,
-      file_url: filePath,
-      file_name: file.name,
-      file_size: file.size,
-      file_type: file.type,
-      categoria_id: form.categoria_id || null,
-      retiro_id: retiroId ?? null,
-      nivel_acceso: form.nivel_acceso as "all",
-    });
+    const { data: contentRow, error: dbError } = await supabase
+      .from("content")
+      .insert({
+        titulo: form.titulo.trim(),
+        descripcion: form.descripcion.trim() || null,
+        file_url: filePath,
+        file_name: file.name,
+        file_size: file.size,
+        file_type: file.type,
+        nivel_acceso: "all",
+      })
+      .select("id")
+      .single();
 
-    if (dbError) {
-      toast.error("Error al guardar: " + dbError.message);
-      // Limpiar archivo subido si falla la DB
+    if (dbError || !contentRow) {
+      toast.error("Error al guardar: " + dbError?.message);
       await supabase.storage.from("content-files").remove([filePath]);
       setLoading(false);
       return;
     }
 
+    // Asignar retiro(s): fijo si viene de la página de un retiro,
+    // o los seleccionados en el picker (vacío = visible para todos)
+    const retirosAAsignar = retiroId ? [retiroId] : selectedRetiros;
+    if (retirosAAsignar.length) {
+      const { error: linkError } = await supabase.from("content_retiros").insert(
+        retirosAAsignar.map((rid) => ({ content_id: contentRow.id, retiro_id: rid }))
+      );
+      if (linkError) {
+        toast.error("El archivo se subió, pero no se pudo asignar el retiro: " + linkError.message);
+      }
+    }
+
     toast.success("Archivo subido correctamente");
-    setForm({ titulo: "", descripcion: "", categoria_id: "", nivel_acceso: "all" });
+    setForm({ titulo: "", descripcion: "" });
+    setSelectedRetiros([]);
     setFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
     router.refresh();
@@ -155,59 +169,63 @@ export function UploadContentForm({
             onChange={handleFileChange}
           />
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="titulo">Título *</Label>
-              <Input
-                id="titulo"
-                value={form.titulo}
-                onChange={(e) => setForm((p) => ({ ...p, titulo: e.target.value }))}
-                placeholder="Ej: Guía de meditación para principiantes"
-                required
-              />
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="descripcion">Descripción</Label>
-              <Textarea
-                id="descripcion"
-                value={form.descripcion}
-                onChange={(e) => setForm((p) => ({ ...p, descripcion: e.target.value }))}
-                placeholder="Breve descripción del contenido..."
-                rows={2}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Categoría</Label>
-              <Select onValueChange={(v) => setForm((p) => ({ ...p, categoria_id: v as string }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sin categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>{c.nombre}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {!retiroId && (
-              <div className="space-y-2">
-                <Label>¿Quién puede verlo?</Label>
-                <Select
-                  defaultValue="all"
-                  onValueChange={(v) => setForm((p) => ({ ...p, nivel_acceso: v as string }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ACCESS_LEVELS.map((l) => (
-                      <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+          <div className="space-y-2">
+            <Label htmlFor="titulo">Título *</Label>
+            <Input
+              id="titulo"
+              value={form.titulo}
+              onChange={(e) => setForm((p) => ({ ...p, titulo: e.target.value }))}
+              placeholder="Ej: Guía de meditación para principiantes"
+              required
+            />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="descripcion">Descripción</Label>
+            <Textarea
+              id="descripcion"
+              value={form.descripcion}
+              onChange={(e) => setForm((p) => ({ ...p, descripcion: e.target.value }))}
+              placeholder="Breve descripción del contenido..."
+              rows={2}
+            />
+          </div>
+
+          {!retiroId && (
+            <div className="space-y-2">
+              <Label>¿Quién puede verlo?</Label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={toggleTodos}
+                  className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
+                    selectedRetiros.length === 0
+                      ? "bg-stone-800 text-white border-stone-800"
+                      : "border-stone-200 text-stone-600 hover:border-stone-400"
+                  }`}
+                >
+                  Todos
+                </button>
+                {retiros.map((r) => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => toggleRetiro(r.id)}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
+                      selectedRetiros.includes(r.id)
+                        ? "bg-stone-800 text-white border-stone-800"
+                        : "border-stone-200 text-stone-600 hover:border-stone-400"
+                    }`}
+                  >
+                    {r.nombre}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-stone-400">
+                &ldquo;Todos&rdquo; lo hace visible a cualquier usuario aprobado. Si eliges uno o varios
+                retiros, solo lo verán quienes tengan acceso a esos retiros.
+              </p>
+            </div>
+          )}
 
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Subiendo..." : "Subir archivo"}

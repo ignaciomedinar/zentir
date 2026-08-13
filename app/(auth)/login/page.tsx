@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") ?? "/biblioteca";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/biblioteca");
+    router.push(next);
     router.refresh();
   }
 
@@ -77,12 +79,23 @@ export default function LoginPage() {
           </form>
           <p className="text-center text-sm text-stone-500 mt-4">
             ¿No tienes cuenta?{" "}
-            <Link href="/register" className="text-stone-700 font-medium hover:underline">
+            <Link
+              href={next !== "/biblioteca" ? `/register?next=${encodeURIComponent(next)}` : "/register"}
+              className="text-stone-700 font-medium hover:underline"
+            >
               Regístrate
             </Link>
           </p>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

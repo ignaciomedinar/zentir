@@ -9,7 +9,7 @@ export default async function AdminRetirosPage() {
 
   const { data: retiros } = await supabase
     .from("retiros")
-    .select("*, content(count), retiro_access(count)")
+    .select("*, content_retiros(count), retiro_access(count)")
     .order("created_at", { ascending: false });
 
   return (
@@ -43,16 +43,26 @@ export default async function AdminRetirosPage() {
                     {r.descripcion && (
                       <p className="text-sm text-stone-500 line-clamp-2">{r.descripcion}</p>
                     )}
-                    {(r.fecha || r.lugar) && (
+                    {(r.fecha_inicio || r.lugar) && (
                       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-stone-500 pt-1">
-                        {r.fecha && (
+                        {r.fecha_inicio && (
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            {new Date(r.fecha + "T00:00:00").toLocaleDateString("es-MX", {
+                            {new Date(r.fecha_inicio + "T00:00:00").toLocaleDateString("es-MX", {
                               day: "numeric",
                               month: "long",
                               year: "numeric",
                             })}
+                            {r.fecha_fin && (
+                              <>
+                                {" – "}
+                                {new Date(r.fecha_fin + "T00:00:00").toLocaleDateString("es-MX", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })}
+                              </>
+                            )}
                           </span>
                         )}
                         {r.lugar && (
@@ -64,7 +74,7 @@ export default async function AdminRetirosPage() {
                       </div>
                     )}
                     <div className="flex gap-4 text-xs text-stone-400 pt-2">
-                      <span>{(r.content as { count: number }[])[0]?.count ?? 0} archivos</span>
+                      <span>{(r.content_retiros as { count: number }[])[0]?.count ?? 0} archivos</span>
                       <span>{(r.retiro_access as { count: number }[])[0]?.count ?? 0} con acceso</span>
                     </div>
                   </CardContent>

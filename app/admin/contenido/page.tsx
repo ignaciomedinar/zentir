@@ -5,12 +5,12 @@ import { ContentTable } from "@/components/admin/content-table";
 export default async function AdminContenidoPage() {
   const supabase = await createClient();
 
-  const [{ data: contenido }, { data: categories }] = await Promise.all([
+  const [{ data: contenido }, { data: retiros }] = await Promise.all([
     supabase
       .from("content")
-      .select("*, categories(nombre)")
+      .select("*, content_retiros(retiros(nombre))")
       .order("created_at", { ascending: false }),
-    supabase.from("categories").select("*").order("nombre"),
+    supabase.from("retiros").select("id, nombre").order("nombre"),
   ]);
 
   return (
@@ -20,7 +20,7 @@ export default async function AdminContenidoPage() {
         <p className="text-stone-500 mt-1">Sube y gestiona los archivos de la biblioteca</p>
       </div>
 
-      <UploadContentForm categories={categories ?? []} />
+      <UploadContentForm retiros={retiros ?? []} />
 
       <div>
         <h2 className="text-lg font-medium text-stone-700 mb-4">Archivos subidos</h2>

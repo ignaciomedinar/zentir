@@ -46,8 +46,13 @@ export type Database = {
           id: string;
           nombre: string;
           descripcion: string | null;
-          fecha: string | null;
+          descripcion_detallada: string | null;
+          fecha_inicio: string | null;
+          fecha_fin: string | null;
           lugar: string | null;
+          precio: number | null;
+          moneda: string;
+          imagen_portada: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -55,8 +60,13 @@ export type Database = {
           id?: string;
           nombre: string;
           descripcion?: string | null;
-          fecha?: string | null;
+          descripcion_detallada?: string | null;
+          fecha_inicio?: string | null;
+          fecha_fin?: string | null;
           lugar?: string | null;
+          precio?: number | null;
+          moneda?: string;
+          imagen_portada?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -64,12 +74,45 @@ export type Database = {
           id?: string;
           nombre?: string;
           descripcion?: string | null;
-          fecha?: string | null;
+          descripcion_detallada?: string | null;
+          fecha_inicio?: string | null;
+          fecha_fin?: string | null;
           lugar?: string | null;
+          precio?: number | null;
+          moneda?: string;
+          imagen_portada?: string | null;
           created_at?: string;
           updated_at?: string;
         };
         Relationships: [];
+      };
+      inscripciones: {
+        Row: {
+          id: string;
+          user_id: string;
+          retiro_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          retiro_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          retiro_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "inscripciones_retiro_id_fkey";
+            columns: ["retiro_id"];
+            referencedRelation: "retiros";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       retiro_access: {
         Row: {
@@ -99,27 +142,6 @@ export type Database = {
           }
         ];
       };
-      categories: {
-        Row: {
-          id: string;
-          nombre: string;
-          slug: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          nombre: string;
-          slug: string;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          nombre?: string;
-          slug?: string;
-          created_at?: string;
-        };
-        Relationships: [];
-      };
       content: {
         Row: {
           id: string;
@@ -129,8 +151,6 @@ export type Database = {
           file_name: string;
           file_size: number;
           file_type: string;
-          categoria_id: string | null;
-          retiro_id: string | null;
           nivel_acceso: AccessLevel;
           created_at: string;
           updated_at: string;
@@ -143,8 +163,6 @@ export type Database = {
           file_name: string;
           file_size?: number;
           file_type: string;
-          categoria_id?: string | null;
-          retiro_id?: string | null;
           nivel_acceso?: AccessLevel;
           created_at?: string;
           updated_at?: string;
@@ -157,21 +175,34 @@ export type Database = {
           file_name?: string;
           file_size?: number;
           file_type?: string;
-          categoria_id?: string | null;
-          retiro_id?: string | null;
           nivel_acceso?: AccessLevel;
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
+      };
+      content_retiros: {
+        Row: {
+          content_id: string;
+          retiro_id: string;
+        };
+        Insert: {
+          content_id: string;
+          retiro_id: string;
+        };
+        Update: {
+          content_id?: string;
+          retiro_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "content_categoria_id_fkey";
-            columns: ["categoria_id"];
-            referencedRelation: "categories";
+            foreignKeyName: "content_retiros_content_id_fkey";
+            columns: ["content_id"];
+            referencedRelation: "content";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "content_retiro_id_fkey";
+            foreignKeyName: "content_retiros_retiro_id_fkey";
             columns: ["retiro_id"];
             referencedRelation: "retiros";
             referencedColumns: ["id"];

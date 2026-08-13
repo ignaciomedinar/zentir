@@ -2,13 +2,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/shared/header";
 import { ContentCard } from "@/components/shared/content-card";
-import { Badge } from "@/components/ui/badge";
 
-export default async function BibliotecaPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ categoria?: string }>;
-}) {
+export default async function BibliotecaPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -22,122 +17,83 @@ export default async function BibliotecaPage({
 
   if (!profile) redirect("/login");
 
-  const params = await searchParams;
-  const categoriaSlug = params.categoria;
-
-  // Categorías disponibles
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("*")
-    .order("nombre");
-
-  // Contenido general (sin retiro), filtrado por categoría
-  let query = supabase
+  // Todo el contenido al que el usuario tiene acceso (RLS ya filtra
+  // por retiro_access / nivel_acceso / rol), con los retiros a los que
+  // está asignado cada archivo.
+  const { data: contenido } = await supabase
     .from("content")
-    .select("*, categories(nombre, slug)")
-    .is("retiro_id", null)
+    .select("*, content_retiros(retiro_id, retiros(id, nombre, descripcion))")
     .order("created_at", { ascending: false });
 
-  if (categoriaSlug) {
-    const cat = categories?.find((c) => c.slug === categoriaSlug);
-    if (cat) query = query.eq("categoria_id", cat.id);
+  const contenidoGeneral = (contenido ?? []).filter((item) => !item.content_retiros?.length);
+
+  const retirosMap = new Map<string, { id: string; nombre: string; descripcion: string | null; items: typeof contenido }>();
+  for (const item of contenido ?? []) {
+    for (const cr of item.content_retiros ?? []) {
+      if (!cr.retiros) continue;
+      if (!retirosMap.has(cr.retiros.id)) {
+        retirosMap.set(cr.retiros.id, { ...cr.retiros, items: [] });
+      }
+      retirosMap.get(cr.retiros.id)!.items!.push(item);
+    }
   }
-
-  const { data: contenidoGeneral } = await query;
-
-  // Retiros a los que el usuario tiene acceso, con su material
-  const { data: retiros } = await supabase
-    .from("retiros")
-    .select("*, content(*, categories(nombre, slug))")
-    .order("created_at", { ascending: false });
 
   const perfilLabels: Record<string, string> = {
     usuario: "Usuario",
     terapeuta: "Terapeuta Zentir",
   };
 
-  const sinContenido = !contenidoGeneral?.length && !retiros?.length;
+  const sinContenido = !contenido?.length;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header user={user} isAdmin={profile.role === "admin"} />
+    <div className="min-h-screen flex flex-col bg-[#1c1c1c] text-white">
+      <Header user={user} isAdmin={profile.role === "admin"} variant="dark" />
 
-      <main className="max-w-6xl mx-auto w-full px-4 py-10 flex-1">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-semibold text-stone-800">Mi biblioteca</h1>
-          <Badge variant="secondary">
+      <main className="max-w-250 mx-auto w-full px-6 py-14 flex-1">
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <h1 className="text-3xl font-semibold">Mi biblioteca</h1>
+          <span className="text-xs uppercase tracking-widest text-zentir font-medium bg-zentir/15 rounded-full px-3 py-1.5 shrink-0">
             {perfilLabels[profile.perfil_tipo] ?? profile.perfil_tipo}
-          </Badge>
+          </span>
         </div>
-        <p className="text-stone-500 mb-8">
+        <p className="text-white/60 mb-12">
           Hola, {profile.nombre}. Aquí está el contenido disponible para ti.
         </p>
 
         {sinContenido ? (
-          <div className="text-center py-20 text-stone-400">
+          <div className="text-center py-20 text-white/40">
             <div className="text-5xl mb-4">📂</div>
             <p className="text-lg">Todavía no hay contenido disponible.</p>
             <p className="text-sm mt-1">Vuelve pronto, se van sumando materiales.</p>
           </div>
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-14">
             {/* Material general */}
-            <section>
-              <div className="flex flex-wrap gap-2 mb-6">
-                <a
-                  href="/biblioteca"
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    !categoriaSlug
-                      ? "bg-stone-800 text-white"
-                      : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-                  }`}
-                >
-                  Todos
-                </a>
-                {categories?.map((cat) => (
-                  <a
-                    key={cat.id}
-                    href={`/biblioteca?categoria=${cat.slug}`}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                      categoriaSlug === cat.slug
-                        ? "bg-stone-800 text-white"
-                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-                    }`}
-                  >
-                    {cat.nombre}
-                  </a>
-                ))}
-              </div>
-
-              {!contenidoGeneral?.length ? (
-                <p className="text-sm text-stone-400">No hay material general todavía.</p>
-              ) : (
+            {!!contenidoGeneral.length && (
+              <section>
+                <h2 className="text-lg font-semibold mb-5">General</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {contenidoGeneral.map((item) => (
                     <ContentCard key={item.id} item={item} userId={user.id} />
                   ))}
                 </div>
-              )}
-            </section>
+              </section>
+            )}
 
             {/* Material por retiro */}
-            {retiros?.map((retiro) => {
-              const itemsRetiro = retiro.content ?? [];
-              if (!itemsRetiro.length) return null;
-              return (
-                <section key={retiro.id}>
-                  <h2 className="text-lg font-semibold text-stone-800 mb-1">{retiro.nombre}</h2>
-                  {retiro.descripcion && (
-                    <p className="text-sm text-stone-500 mb-4">{retiro.descripcion}</p>
-                  )}
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {itemsRetiro.map((item) => (
-                      <ContentCard key={item.id} item={item} userId={user.id} />
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
+            {Array.from(retirosMap.values()).map((retiro) => (
+              <section key={retiro.id}>
+                <h2 className="text-lg font-semibold mb-1">{retiro.nombre}</h2>
+                {retiro.descripcion && (
+                  <p className="text-sm text-white/60 mb-5">{retiro.descripcion}</p>
+                )}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {retiro.items!.map((item) => (
+                    <ContentCard key={item.id} item={item} userId={user.id} />
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         )}
       </main>

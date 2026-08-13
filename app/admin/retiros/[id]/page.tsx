@@ -14,15 +14,14 @@ export default async function AdminRetiroDetailPage({
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: retiro }, { data: contenido }, { data: categories }, { data: usuarios }, { data: accesos }] =
+  const [{ data: retiro }, { data: contenido }, { data: usuarios }, { data: accesos }] =
     await Promise.all([
       supabase.from("retiros").select("*").eq("id", id).single(),
       supabase
         .from("content")
-        .select("*, categories(nombre)")
-        .eq("retiro_id", id)
+        .select("*, content_retiros!inner(retiro_id, retiros(nombre))")
+        .eq("content_retiros.retiro_id", id)
         .order("created_at", { ascending: false }),
-      supabase.from("categories").select("*").order("nombre"),
       supabase
         .from("profiles")
         .select("user_id, nombre, apellido, perfil_tipo")
@@ -43,7 +42,7 @@ export default async function AdminRetiroDetailPage({
 
       <RetiroDetailsForm retiro={retiro} />
 
-      <UploadContentForm categories={categories ?? []} retiroId={retiro.id} />
+      <UploadContentForm retiros={[]} retiroId={retiro.id} />
 
       <div>
         <h2 className="text-lg font-medium text-stone-700 mb-4">Material de este retiro</h2>

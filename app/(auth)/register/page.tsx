@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,10 @@ const perfiles: { value: ProfileType; label: string; desc: string }[] = [
   { value: "terapeuta", label: "Terapeuta Zentir", desc: "Soy parte del equipo de Zentir" },
 ];
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") ?? "/biblioteca";
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -45,7 +47,7 @@ export default function RegisterPage() {
       email: form.email,
       password: form.password,
       options: {
-        emailRedirectTo: `${(window as Window).location.origin}/auth/callback`,
+        emailRedirectTo: `${(window as Window).location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
         data: {
           nombre: form.nombre,
           apellido: form.apellido,
@@ -61,9 +63,9 @@ export default function RegisterPage() {
     }
 
     if (data.user && !data.session) {
-      router.push(`/verify?email=${encodeURIComponent(form.email)}`);
+      router.push(`/verify?email=${encodeURIComponent(form.email)}&next=${encodeURIComponent(next)}`);
     } else {
-      router.push("/biblioteca");
+      router.push(next);
     }
   }
 
@@ -143,12 +145,23 @@ export default function RegisterPage() {
           </form>
           <p className="text-center text-sm text-stone-500 mt-4">
             ¿Ya tienes cuenta?{" "}
-            <Link href="/login" className="text-stone-700 font-medium hover:underline">
+            <Link
+              href={next !== "/biblioteca" ? `/login?next=${encodeURIComponent(next)}` : "/login"}
+              className="text-stone-700 font-medium hover:underline"
+            >
               Ingresa
             </Link>
           </p>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
   );
 }

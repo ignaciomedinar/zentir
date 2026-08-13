@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Download, FileText, Presentation } from "lucide-react";
 import { toast } from "sonner";
 
@@ -18,7 +16,6 @@ interface ContentItem {
   file_type: string;
   nivel_acceso: string;
   created_at: string;
-  categories?: { nombre: string; slug: string } | null;
 }
 
 function formatBytes(bytes: number) {
@@ -67,32 +64,29 @@ export function ContentCard({ item, userId }: { item: ContentItem; userId: strin
   }
 
   return (
-    <Card className="flex flex-col hover:shadow-md transition-shadow">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-2">
-          <div className="p-2 bg-stone-100 rounded-lg text-stone-600">
-            <FileIcon type={item.file_type} />
-          </div>
-          {item.categories && (
-            <Badge variant="outline" className="text-xs">
-              {item.categories.nombre}
-            </Badge>
-          )}
-        </div>
-        <CardTitle className="text-base mt-2 leading-snug">{item.titulo}</CardTitle>
+    <div className="rounded-[12px] border border-[#e5e0da] bg-[#faf8f6] p-6 flex flex-col gap-4">
+      <div className="p-2.5 bg-zentir/15 text-zentir rounded-lg w-fit">
+        <FileIcon type={item.file_type} />
+      </div>
+      <div>
+        <h3 className="font-semibold text-black leading-snug">{item.titulo}</h3>
         {item.descripcion && (
-          <CardDescription className="text-sm line-clamp-2">{item.descripcion}</CardDescription>
+          <p className="text-sm text-[#737373] mt-1 line-clamp-2">{item.descripcion}</p>
         )}
-      </CardHeader>
-      <CardContent className="mt-auto pt-0">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-stone-400">{formatBytes(item.file_size)}</span>
-          <Button size="sm" variant="outline" onClick={handleDownload} disabled={loading}>
-            <Download className="w-3.5 h-3.5 mr-1.5" />
-            {loading ? "Descargando..." : "Descargar"}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+      <div className="flex items-center justify-between mt-auto pt-2">
+        <span className="text-xs text-[#a8a29e]">{formatBytes(item.file_size)}</span>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={handleDownload}
+          disabled={loading}
+          className="border-black/15 text-black hover:bg-black/5"
+        >
+          <Download className="w-3.5 h-3.5 mr-1.5" />
+          {loading ? "Descargando..." : "Descargar"}
+        </Button>
+      </div>
+    </div>
   );
 }
