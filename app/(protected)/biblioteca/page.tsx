@@ -31,10 +31,11 @@ export default async function BibliotecaPage({
     .select("*")
     .order("nombre");
 
-  // Contenido filtrado (RLS controla acceso por nivel)
+  // Contenido general (sin retiro), filtrado por categoría
   let query = supabase
     .from("content")
     .select("*, categories(nombre, slug)")
+    .is("retiro_id", null)
     .order("created_at", { ascending: false });
 
   if (categoriaSlug) {
@@ -42,14 +43,20 @@ export default async function BibliotecaPage({
     if (cat) query = query.eq("categoria_id", cat.id);
   }
 
-  const { data: contenido } = await query;
+  const { data: contenidoGeneral } = await query;
+
+  // Retiros a los que el usuario tiene acceso, con su material
+  const { data: retiros } = await supabase
+    .from("retiros")
+    .select("*, content(*, categories(nombre, slug))")
+    .order("created_at", { ascending: false });
 
   const perfilLabels: Record<string, string> = {
-    general: "Público general",
-    curioso: "Curioso/a",
-    terapeuta: "Terapeuta",
-    facilitador: "Facilitador/a",
+    usuario: "Usuario",
+    terapeuta: "Terapeuta Zentir",
   };
+
+  const sinContenido = !contenidoGeneral?.length && !retiros?.length;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -58,64 +65,79 @@ export default async function BibliotecaPage({
       <main className="max-w-6xl mx-auto w-full px-4 py-10 flex-1">
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-semibold text-stone-800">Mi biblioteca</h1>
-          <div className="flex items-center gap-2">
-            {profile.is_premium && (
-              <Badge className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100">
-                ⭐ Premium
-              </Badge>
-            )}
-            <Badge variant="secondary">
-              {perfilLabels[profile.perfil_tipo] ?? profile.perfil_tipo}
-            </Badge>
-          </div>
+          <Badge variant="secondary">
+            {perfilLabels[profile.perfil_tipo] ?? profile.perfil_tipo}
+          </Badge>
         </div>
         <p className="text-stone-500 mb-8">
-          Hola, {profile.nombre}. Aquí está el contenido disponible para vos.
+          Hola, {profile.nombre}. Aquí está el contenido disponible para ti.
         </p>
 
-        {/* Filtro por categoría */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          <a
-            href="/biblioteca"
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              !categoriaSlug
-                ? "bg-stone-800 text-white"
-                : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-            }`}
-          >
-            Todos
-          </a>
-          {categories?.map((cat) => (
-            <a
-              key={cat.id}
-              href={`/biblioteca?categoria=${cat.slug}`}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                categoriaSlug === cat.slug
-                  ? "bg-stone-800 text-white"
-                  : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-              }`}
-            >
-              {cat.nombre}
-            </a>
-          ))}
-        </div>
-
-        {/* Grid de contenido */}
-        {!contenido || contenido.length === 0 ? (
+        {sinContenido ? (
           <div className="text-center py-20 text-stone-400">
             <div className="text-5xl mb-4">📂</div>
             <p className="text-lg">Todavía no hay contenido disponible.</p>
-            <p className="text-sm mt-1">Volvé pronto, se van sumando materiales.</p>
+            <p className="text-sm mt-1">Vuelve pronto, se van sumando materiales.</p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {contenido.map((item) => (
-              <ContentCard
-                key={item.id}
-                item={item}
-                userId={user.id}
-              />
-            ))}
+          <div className="space-y-12">
+            {/* Material general */}
+            <section>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <a
+                  href="/biblioteca"
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    !categoriaSlug
+                      ? "bg-stone-800 text-white"
+                      : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  }`}
+                >
+                  Todos
+                </a>
+                {categories?.map((cat) => (
+                  <a
+                    key={cat.id}
+                    href={`/biblioteca?categoria=${cat.slug}`}
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                      categoriaSlug === cat.slug
+                        ? "bg-stone-800 text-white"
+                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                    }`}
+                  >
+                    {cat.nombre}
+                  </a>
+                ))}
+              </div>
+
+              {!contenidoGeneral?.length ? (
+                <p className="text-sm text-stone-400">No hay material general todavía.</p>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {contenidoGeneral.map((item) => (
+                    <ContentCard key={item.id} item={item} userId={user.id} />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* Material por retiro */}
+            {retiros?.map((retiro) => {
+              const itemsRetiro = retiro.content ?? [];
+              if (!itemsRetiro.length) return null;
+              return (
+                <section key={retiro.id}>
+                  <h2 className="text-lg font-semibold text-stone-800 mb-1">{retiro.nombre}</h2>
+                  {retiro.descripcion && (
+                    <p className="text-sm text-stone-500 mb-4">{retiro.descripcion}</p>
+                  )}
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {itemsRetiro.map((item) => (
+                      <ContentCard key={item.id} item={item} userId={user.id} />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
       </main>

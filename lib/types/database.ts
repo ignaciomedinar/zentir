@@ -1,6 +1,6 @@
 export type UserRole = "user" | "admin";
-export type ProfileType = "general" | "curioso" | "terapeuta" | "facilitador";
-export type AccessLevel = "all" | "premium" | "general" | "curioso" | "terapeuta" | "facilitador";
+export type ProfileType = "usuario" | "terapeuta";
+export type AccessLevel = "all" | "terapeuta";
 
 export type Database = {
   public: {
@@ -14,7 +14,6 @@ export type Database = {
           role: UserRole;
           perfil_tipo: ProfileType;
           aprobado: boolean;
-          is_premium: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -26,7 +25,6 @@ export type Database = {
           role?: UserRole;
           perfil_tipo?: ProfileType;
           aprobado?: boolean;
-          is_premium?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -38,11 +36,68 @@ export type Database = {
           role?: UserRole;
           perfil_tipo?: ProfileType;
           aprobado?: boolean;
-          is_premium?: boolean;
           created_at?: string;
           updated_at?: string;
         };
         Relationships: [];
+      };
+      retiros: {
+        Row: {
+          id: string;
+          nombre: string;
+          descripcion: string | null;
+          fecha: string | null;
+          lugar: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          nombre: string;
+          descripcion?: string | null;
+          fecha?: string | null;
+          lugar?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          nombre?: string;
+          descripcion?: string | null;
+          fecha?: string | null;
+          lugar?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      retiro_access: {
+        Row: {
+          id: string;
+          user_id: string;
+          retiro_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          retiro_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          retiro_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "retiro_access_retiro_id_fkey";
+            columns: ["retiro_id"];
+            referencedRelation: "retiros";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       categories: {
         Row: {
@@ -75,6 +130,7 @@ export type Database = {
           file_size: number;
           file_type: string;
           categoria_id: string | null;
+          retiro_id: string | null;
           nivel_acceso: AccessLevel;
           created_at: string;
           updated_at: string;
@@ -88,6 +144,7 @@ export type Database = {
           file_size?: number;
           file_type: string;
           categoria_id?: string | null;
+          retiro_id?: string | null;
           nivel_acceso?: AccessLevel;
           created_at?: string;
           updated_at?: string;
@@ -101,6 +158,7 @@ export type Database = {
           file_size?: number;
           file_type?: string;
           categoria_id?: string | null;
+          retiro_id?: string | null;
           nivel_acceso?: AccessLevel;
           created_at?: string;
           updated_at?: string;
@@ -110,6 +168,12 @@ export type Database = {
             foreignKeyName: "content_categoria_id_fkey";
             columns: ["categoria_id"];
             referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "content_retiro_id_fkey";
+            columns: ["retiro_id"];
+            referencedRelation: "retiros";
             referencedColumns: ["id"];
           }
         ];

@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       <h1 style="font-size: 24px; color: #1c1917; margin-bottom: 16px;">Zentir</h1>
       <div style="color: #44403c; line-height: 1.7; white-space: pre-wrap;">${cuerpo.replace(/\n/g, "<br>")}</div>
       <hr style="margin: 32px 0; border: none; border-top: 1px solid #e7e5e4;" />
-      <p style="font-size: 12px; color: #a8a29e;">Este email fue enviado desde Zentir. Si no querés recibirlos, contactanos.</p>
+      <p style="font-size: 12px; color: #a8a29e;">Este correo fue enviado desde Zentir. Si no quieres recibirlos, contáctanos.</p>
     </div>
   `;
 

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { LayoutDashboard, FileUp, Users, Mail, LogOut, Home } from "lucide-react";
+import { LayoutDashboard, FileUp, Users, Mail, LogOut, Home, Palmtree } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { href: "/admin/retiros", label: "Retiros", icon: Palmtree },
   { href: "/admin/contenido", label: "Contenido", icon: FileUp },
   { href: "/admin/usuarios", label: "Usuarios", icon: Users },
   { href: "/admin/emails", label: "Emails", icon: Mail },

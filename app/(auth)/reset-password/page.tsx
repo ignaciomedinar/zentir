@@ -39,8 +39,8 @@ export default function ResetPasswordPage() {
           <CardTitle className="text-2xl text-stone-800">Recuperar contraseña</CardTitle>
           <CardDescription>
             {sent
-              ? "Revisá tu email para el link de recuperación"
-              : "Te enviamos un link para resetear tu contraseña"}
+              ? "Revisa tu correo para el link de recuperación"
+              : "Te enviamos un link para restablecer tu contraseña"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -48,7 +48,7 @@ export default function ResetPasswordPage() {
             <div className="text-center space-y-3">
               <div className="text-4xl">📩</div>
               <p className="text-sm text-stone-500">
-                Si el email existe en nuestro sistema, recibirás las instrucciones.
+                Si el correo existe en nuestro sistema, recibirás las instrucciones.
               </p>
               <ButtonLink variant="outline" href="/login">Volver al inicio de sesión</ButtonLink>
             </div>

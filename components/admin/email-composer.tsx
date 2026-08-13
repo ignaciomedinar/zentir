@@ -11,10 +11,8 @@ import { toast } from "sonner";
 
 const DESTINATARIOS = [
   { value: "todos", label: "Todos los usuarios" },
-  { value: "general", label: "Solo perfil: General" },
-  { value: "curioso", label: "Solo perfil: Curioso/a" },
-  { value: "terapeuta", label: "Solo perfil: Terapeuta" },
-  { value: "facilitador", label: "Solo perfil: Facilitador/a" },
+  { value: "usuario", label: "Solo usuarios" },
+  { value: "terapeuta", label: "Solo terapeutas Zentir" },
 ];
 
 export function EmailComposer() {
@@ -91,7 +89,7 @@ export function EmailComposer() {
               id="cuerpo"
               value={form.cuerpo}
               onChange={(e) => setForm((p) => ({ ...p, cuerpo: e.target.value }))}
-              placeholder="Escribí el mensaje para tus usuarios..."
+              placeholder="Escribe el mensaje para tus usuarios..."
               rows={6}
               required
             />

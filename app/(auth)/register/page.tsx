@@ -13,10 +13,8 @@ import { toast } from "sonner";
 import type { ProfileType } from "@/lib/types/database";
 
 const perfiles: { value: ProfileType; label: string; desc: string }[] = [
-  { value: "general", label: "Público general", desc: "Me interesa el bienestar y el autoconocimiento" },
-  { value: "curioso", label: "Curioso/a", desc: "Quiero explorar prácticas de retiro y meditación" },
-  { value: "terapeuta", label: "Terapeuta", desc: "Trabajo en el área de salud mental o terapias" },
-  { value: "facilitador", label: "Facilitador/a", desc: "Facilito grupos, retiros o procesos de desarrollo" },
+  { value: "usuario", label: "Usuario", desc: "Quiero acceder a los materiales y recursos de Zentir" },
+  { value: "terapeuta", label: "Terapeuta Zentir", desc: "Soy parte del equipo de Zentir" },
 ];
 
 export default function RegisterPage() {
@@ -37,7 +35,7 @@ export default function RegisterPage() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     if (!form.perfil_tipo) {
-      toast.error("Por favor seleccioná tu perfil");
+      toast.error("Por favor selecciona tu perfil");
       return;
     }
     setLoading(true);
@@ -47,7 +45,7 @@ export default function RegisterPage() {
       email: form.email,
       password: form.password,
       options: {
-        emailRedirectTo: `${(window as Window).location.origin}/verify`,
+        emailRedirectTo: `${(window as Window).location.origin}/auth/callback`,
         data: {
           nombre: form.nombre,
           apellido: form.apellido,
@@ -63,7 +61,7 @@ export default function RegisterPage() {
     }
 
     if (data.user && !data.session) {
-      router.push("/verify");
+      router.push(`/verify?email=${encodeURIComponent(form.email)}`);
     } else {
       router.push("/biblioteca");
     }
@@ -74,7 +72,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-semibold text-stone-800">Crear cuenta</CardTitle>
-          <CardDescription>Unite a la comunidad Zentir</CardDescription>
+          <CardDescription>Únete a la comunidad Zentir</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleRegister} className="space-y-4">
@@ -122,10 +120,10 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label>¿Quién sos?</Label>
+              <Label>¿Quién eres?</Label>
               <Select onValueChange={(v) => handleChange("perfil_tipo", v as string)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Seleccioná tu perfil" />
+                  <SelectValue placeholder="Selecciona tu perfil" />
                 </SelectTrigger>
                 <SelectContent>
                   {perfiles.map((p) => (
@@ -144,9 +142,9 @@ export default function RegisterPage() {
             </Button>
           </form>
           <p className="text-center text-sm text-stone-500 mt-4">
-            ¿Ya tenés cuenta?{" "}
+            ¿Ya tienes cuenta?{" "}
             <Link href="/login" className="text-stone-700 font-medium hover:underline">
-              Ingresá
+              Ingresa
             </Link>
           </p>
         </CardContent>

@@ -15,7 +15,7 @@ export default async function AdminEmailsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold text-stone-800">Emails</h1>
-        <p className="text-stone-500 mt-1">Enviá mensajes a tus usuarios</p>
+        <p className="text-stone-500 mt-1">Envía mensajes a tus usuarios</p>
       </div>
 
       <EmailComposer />
@@ -39,7 +39,7 @@ export default async function AdminEmailsPage() {
                       </p>
                     </div>
                     <span className="text-xs text-stone-400 shrink-0">
-                      {new Date(log.enviado_at).toLocaleDateString("es-AR", {
+                      {new Date(log.enviado_at).toLocaleDateString("es-MX", {
                         day: "numeric",
                         month: "short",
                         hour: "2-digit",

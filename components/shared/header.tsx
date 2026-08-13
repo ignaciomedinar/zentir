@@ -23,7 +23,7 @@ export function Header({ user, isAdmin }: HeaderProps) {
   }
 
   return (
-    <header className="border-b border-[#cdcdcd] bg-white sticky top-0 z-50">
+    <header className="border-b border-[#cdcdcd] bg-background sticky top-0 z-50">
       <div className="max-w-300 mx-auto px-6 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image src="/images/logo.png" alt="Zentir" width={72} height={24} className="h-7 w-auto" />
@@ -32,11 +32,11 @@ export function Header({ user, isAdmin }: HeaderProps) {
           {user ? (
             <>
               {isAdmin && (
-                <ButtonLink href="/admin" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors">
+                <ButtonLink variant="ghost" href="/admin" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors">
                   Panel Admin
                 </ButtonLink>
               )}
-              <ButtonLink href="/biblioteca" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors flex items-center gap-1">
+              <ButtonLink variant="ghost" href="/biblioteca" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors flex items-center gap-1">
                 <User className="w-3.5 h-3.5" />
                 Biblioteca
               </ButtonLink>
@@ -49,7 +49,7 @@ export function Header({ user, isAdmin }: HeaderProps) {
             </>
           ) : (
             <>
-              <ButtonLink href="/login" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors">
+              <ButtonLink variant="ghost" href="/login" className="text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors">
                 Ingresar
               </ButtonLink>
               <ButtonLink href="/register" className="text-sm bg-zentir hover:bg-zentir/90 text-white px-4 py-1.5 rounded-full transition-colors">

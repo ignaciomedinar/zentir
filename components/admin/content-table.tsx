@@ -22,10 +22,7 @@ interface ContentItem {
 
 const ACCESS_LABELS: Record<string, string> = {
   all: "Todos",
-  general: "General",
-  curioso: "Curioso/a",
-  terapeuta: "Terapeuta",
-  facilitador: "Facilitador",
+  terapeuta: "Solo terapeutas",
 };
 
 function formatBytes(bytes: number) {
@@ -108,7 +105,7 @@ export function ContentTable({ contenido }: { contenido: ContentItem[] }) {
                   {formatBytes(item.file_size)}
                 </TableCell>
                 <TableCell className="text-sm text-stone-500">
-                  {new Date(item.created_at).toLocaleDateString("es-AR")}
+                  {new Date(item.created_at).toLocaleDateString("es-MX")}
                 </TableCell>
                 <TableCell>
                   <Button

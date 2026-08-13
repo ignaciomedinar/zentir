@@ -19,15 +19,17 @@ interface Category {
 }
 
 const ACCESS_LEVELS = [
-  { value: "all", label: "Todos los usuarios (free)" },
-  { value: "premium", label: "⭐ Solo usuarios premium" },
-  { value: "general", label: "Público general" },
-  { value: "curioso", label: "Curiosos/as" },
-  { value: "terapeuta", label: "Terapeutas" },
-  { value: "facilitador", label: "Facilitadores/as" },
+  { value: "all", label: "Todos los usuarios" },
+  { value: "terapeuta", label: "Solo terapeutas Zentir" },
 ];
 
-export function UploadContentForm({ categories }: { categories: Category[] }) {
+export function UploadContentForm({
+  categories,
+  retiroId,
+}: {
+  categories: Category[];
+  retiroId?: string;
+}) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
@@ -53,7 +55,7 @@ export function UploadContentForm({ categories }: { categories: Category[] }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!file) {
-      toast.error("Seleccioná un archivo");
+      toast.error("Selecciona un archivo");
       return;
     }
     if (!form.titulo.trim()) {
@@ -85,6 +87,7 @@ export function UploadContentForm({ categories }: { categories: Category[] }) {
       file_size: file.size,
       file_type: file.type,
       categoria_id: form.categoria_id || null,
+      retiro_id: retiroId ?? null,
       nivel_acceso: form.nivel_acceso as "all",
     });
 
@@ -138,8 +141,8 @@ export function UploadContentForm({ categories }: { categories: Category[] }) {
             ) : (
               <div className="space-y-2">
                 <Upload className="w-8 h-8 mx-auto text-stone-400" />
-                <p className="text-stone-600 font-medium">Arrastrá tu archivo aquí</p>
-                <p className="text-sm text-stone-400">o hacé click para seleccionarlo</p>
+                <p className="text-stone-600 font-medium">Arrastra tu archivo aquí</p>
+                <p className="text-sm text-stone-400">o haz clic para seleccionarlo</p>
                 <p className="text-xs text-stone-400">PDF, PPT, PPTX, DOC, DOCX</p>
               </div>
             )}
@@ -186,22 +189,24 @@ export function UploadContentForm({ categories }: { categories: Category[] }) {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label>¿Quién puede verlo?</Label>
-              <Select
-                defaultValue="all"
-                onValueChange={(v) => setForm((p) => ({ ...p, nivel_acceso: v as string }))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ACCESS_LEVELS.map((l) => (
-                    <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {!retiroId && (
+              <div className="space-y-2">
+                <Label>¿Quién puede verlo?</Label>
+                <Select
+                  defaultValue="all"
+                  onValueChange={(v) => setForm((p) => ({ ...p, nivel_acceso: v as string }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ACCESS_LEVELS.map((l) => (
+                      <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           <Button type="submit" disabled={loading} className="w-full">

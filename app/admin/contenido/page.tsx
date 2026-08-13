@@ -17,7 +17,7 @@ export default async function AdminContenidoPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold text-stone-800">Contenido</h1>
-        <p className="text-stone-500 mt-1">Subí y gestioná los archivos de la biblioteca</p>
+        <p className="text-stone-500 mt-1">Sube y gestiona los archivos de la biblioteca</p>
       </div>
 
       <UploadContentForm categories={categories ?? []} />

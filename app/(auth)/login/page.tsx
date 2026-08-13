@@ -41,7 +41,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-semibold text-stone-800">Bienvenida/o a Zentir</CardTitle>
-          <CardDescription>Ingresá con tu cuenta para acceder al contenido</CardDescription>
+          <CardDescription>Ingresa con tu cuenta para acceder al contenido</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -76,9 +76,9 @@ export default function LoginPage() {
             </Button>
           </form>
           <p className="text-center text-sm text-stone-500 mt-4">
-            ¿No tenés cuenta?{" "}
+            ¿No tienes cuenta?{" "}
             <Link href="/register" className="text-stone-700 font-medium hover:underline">
-              Registrate
+              Regístrate
             </Link>
           </p>
         </CardContent>

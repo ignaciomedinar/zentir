@@ -2,6 +2,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/shared/header";
 import { ButtonLink } from "@/components/ui/button-link";
+import { Calendar, MapPin } from "lucide-react";
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -17,8 +18,16 @@ export default async function HomePage() {
     isAdmin = profile?.role === "admin";
   }
 
+  const today = new Date().toISOString().slice(0, 10);
+  const { data: proximosRetiros } = await supabase
+    .from("retiros")
+    .select("id, nombre, descripcion, fecha, lugar")
+    .not("fecha", "is", null)
+    .gte("fecha", today)
+    .order("fecha", { ascending: true });
+
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black">
+    <div className="min-h-screen flex flex-col bg-background text-black">
       <Header user={user} isAdmin={isAdmin} />
 
       {/* Hero */}
@@ -41,7 +50,7 @@ export default async function HomePage() {
           </h1>
           <p className="text-lg text-white/80 max-w-xl mx-auto leading-relaxed mb-8">
             Retiros de bienestar y movimiento para quienes buscan reconectar
-            consigo mismas. Viví una experiencia que te transforma.
+            consigo mismas. Vive una experiencia que te transforma.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {user ? (
@@ -83,7 +92,7 @@ export default async function HomePage() {
           <p className="text-[#737373] leading-relaxed text-lg">
             Zentir es un espacio de retiros de bienestar, movimiento y conexión.
             Cada experiencia está diseñada para que puedas soltar lo que ya no te sirve,
-            encontrarte con vos misma y llevarte herramientas reales para tu vida cotidiana.
+            encontrarte contigo misma y llevarte herramientas reales para tu vida cotidiana.
           </p>
         </div>
       </section>
@@ -117,7 +126,7 @@ export default async function HomePage() {
               La experiencia
             </p>
             <h2 className="text-[2.2rem] font-semibold leading-tight">
-              ¿Qué vivís en un retiro Zentir?
+              ¿Qué vives en un retiro Zentir?
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -218,10 +227,10 @@ export default async function HomePage() {
               Zona de miembros
             </p>
             <h2 className="text-[2rem] font-semibold leading-tight">
-              Seguí creciendo después del retiro
+              Sigue creciendo después del retiro
             </h2>
             <p className="text-[#737373] leading-relaxed">
-              Como participante Zentir, accedés a nuestra biblioteca exclusiva:
+              Como participante Zentir, accedes a nuestra biblioteca exclusiva:
               guías de meditación, materiales de retiro, ejercicios y recursos
               diseñados para acompañarte en tu camino diario.
             </p>
@@ -258,17 +267,70 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Próximos retiros */}
+      {!!proximosRetiros?.length && (
+        <section className="py-24 px-6 border-t border-[#cdcdcd]">
+          <div className="max-w-[1000px] mx-auto">
+            <div className="text-center mb-14">
+              <p className="text-sm uppercase tracking-widest text-zentir font-medium mb-3">
+                Agenda
+              </p>
+              <h2 className="text-[2.2rem] font-semibold leading-tight">
+                Próximos retiros
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {proximosRetiros.map((r) => (
+                <div
+                  key={r.id}
+                  className="rounded-[12px] border border-[#e5e0da] bg-[#faf8f6] p-7 flex flex-col gap-3"
+                >
+                  <h3 className="text-xl font-semibold">{r.nombre}</h3>
+                  <div className="flex flex-col gap-1.5 text-[#737373]">
+                    <span className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-zentir shrink-0" />
+                      {new Date(r.fecha + "T00:00:00").toLocaleDateString("es-MX", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    {r.lugar && (
+                      <span className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-zentir shrink-0" />
+                        {r.lugar}
+                      </span>
+                    )}
+                  </div>
+                  {r.descripcion && (
+                    <p className="text-[#737373] leading-relaxed">{r.descripcion}</p>
+                  )}
+                  {!user && (
+                    <ButtonLink
+                      href="/register"
+                      className="inline-flex self-start mt-2 bg-zentir hover:bg-zentir/90 text-white px-6 py-2.5 rounded-full text-sm font-medium"
+                    >
+                      Quiero anotarme
+                    </ButtonLink>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA final */}
       <section className="py-28 px-6 text-center border-t border-[#cdcdcd]">
         <div className="max-w-2xl mx-auto space-y-6">
           <p className="text-sm uppercase tracking-widest text-zentir font-medium">
-            Próximos retiros
+            Únete
           </p>
           <h2 className="text-[2.5rem] font-semibold leading-tight">
             ¿Lista para vivir la experiencia?
           </h2>
           <p className="text-[#737373] text-lg leading-relaxed">
-            Registrate gratis, accedé a los materiales exclusivos y enterate
+            Regístrate gratis, accede a los materiales exclusivos y entérate
             antes que nadie de los próximos retiros Zentir.
           </p>
           {!user ? (
@@ -280,6 +342,7 @@ export default async function HomePage() {
                 Quiero ser parte
               </ButtonLink>
               <ButtonLink
+                variant="outline"
                 href="/login"
                 className="border border-[#cdcdcd] text-black hover:text-zentir px-8 py-3.5 rounded-full text-sm font-medium transition-colors"
               >

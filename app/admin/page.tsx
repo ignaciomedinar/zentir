@@ -86,7 +86,7 @@ export default async function AdminDashboardPage() {
                     <div>
                       <p className="font-medium text-stone-700">{u.nombre} {u.apellido}</p>
                       <p className="text-xs text-stone-400">
-                        {new Date(u.created_at).toLocaleDateString("es-AR")}
+                        {new Date(u.created_at).toLocaleDateString("es-MX")}
                       </p>
                     </div>
                     <span className="text-xs bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full">
@@ -113,7 +113,7 @@ export default async function AdminDashboardPage() {
                   <div key={i} className="flex items-center justify-between text-sm">
                     <p className="text-stone-500">Descarga registrada</p>
                     <span className="text-xs text-stone-400">
-                      {new Date(d.created_at).toLocaleDateString("es-AR")}
+                      {new Date(d.created_at).toLocaleDateString("es-MX")}
                     </span>
                   </div>
                 ))}

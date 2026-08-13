@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Zentir — Retiros y Bienestar",
-  description: "Accedé a materiales exclusivos de retiros, meditación y bienestar.",
+  description: "Accede a materiales exclusivos de retiros, meditación y bienestar.",
 };
 
 export default function RootLayout({
