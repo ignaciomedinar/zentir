@@ -53,13 +53,13 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
       />
 
       {/* Hero */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] min-h-125 sm:h-[90vh] sm:min-h-150 flex items-center justify-center overflow-hidden">
         <Image
           src="/images/hero.jpeg"
           alt="Retiro Zentir"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-[center_30%] sm:object-center"
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
@@ -393,6 +393,12 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
           className="mx-auto mb-4 opacity-60 brightness-0 invert"
         />
         <p suppressHydrationWarning>© {new Date().getFullYear()} Zentir. {t.footer.rights}</p>
+        <p className="mt-2">
+          {t.footer.contact}{" "}
+          <a href="mailto:hola@venazentir.com" className="text-zentir hover:underline">
+            hola@venazentir.com
+          </a>
+        </p>
       </footer>
     </div>
   );

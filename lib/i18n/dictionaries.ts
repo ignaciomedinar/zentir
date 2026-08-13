@@ -72,6 +72,7 @@ export interface Dictionary {
   };
   footer: {
     rights: string;
+    contact: string;
   };
   languageSwitcher: {
     label: string;
@@ -183,7 +184,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Zentir Studio",
       title: "Zentir a tu manera",
       paragraph: "Prácticas, meditaciones y herramientas para volver a ti, estés donde estés.",
-      ctaPrimary: "Quiero entrar",
+      ctaPrimary: "Quiero vivirlo",
       ctaSecondary: "Ya soy parte",
     },
     proximosRetiros: {
@@ -198,12 +199,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Únete a nuestra comunidad",
       paragraph:
         "Zentir lo creamos entre todos. Recibe inspiración, descubre nuestras próximas experiencias y construyamos juntos lo que sigue.",
-      ctaJoin: "Quiero ser parte",
-      ctaLogin: "Ya tengo cuenta",
+      ctaJoin: "Quiero vivirlo",
+      ctaLogin: "Ya soy parte",
       ctaLibrary: "Ir a mi biblioteca",
     },
     footer: {
       rights: "Todos los derechos reservados.",
+      contact: "¿Preguntas o comentarios? Escríbenos a",
     },
     languageSwitcher: {
       label: "Idioma",
@@ -328,12 +330,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Join our community",
       paragraph:
         "Zentir is built by all of us. Get inspired, discover our upcoming experiences, and let's build what's next together.",
-      ctaJoin: "I want to be part of it",
-      ctaLogin: "I already have an account",
+      ctaJoin: "I want in",
+      ctaLogin: "I'm already part of it",
       ctaLibrary: "Go to my library",
     },
     footer: {
       rights: "All rights reserved.",
+      contact: "Questions or comments? Write to us at",
     },
     languageSwitcher: {
       label: "Language",
