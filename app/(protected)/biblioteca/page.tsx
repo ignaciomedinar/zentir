@@ -46,7 +46,7 @@ export default async function BibliotecaPage() {
   const sinContenido = !contenido?.length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1c1c1c] text-white">
+    <div className="min-h-screen flex flex-col bg-zentir-clay text-white">
       <Header user={user} isAdmin={profile.role === "admin"} variant="dark" />
 
       <main className="max-w-250 mx-auto w-full px-6 py-14 flex-1">

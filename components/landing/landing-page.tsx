@@ -43,7 +43,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1c1c1c] text-white">
+    <div className="min-h-screen flex flex-col bg-zentir-clay text-white">
       <Header
         user={user}
         isAdmin={isAdmin}
@@ -135,10 +135,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
         <section className="py-24 px-6">
           <div className="max-w-250 mx-auto">
             <div className="text-center mb-14">
-              <p className="text-sm uppercase tracking-widest text-zentir font-medium mb-3">
-                {t.proximosRetiros.eyebrow}
-              </p>
-              <h2 className="text-[2.2rem] font-semibold leading-tight">
+              <h2 className="text-[2.2rem] font-semibold leading-tight uppercase tracking-wide">
                 {t.proximosRetiros.title}
               </h2>
             </div>
@@ -259,7 +256,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
                   {!!item.rating && (
                     <div className="flex gap-1 mb-3">
                       {Array.from({ length: item.rating }).map((_, r) => (
-                        <Star key={r} className="w-4 h-4 fill-[#00e013] text-[#00e013]" />
+                        <Star key={r} className="w-4 h-4 fill-[#9a9a9a] text-[#9a9a9a]" />
                       ))}
                     </div>
                   )}

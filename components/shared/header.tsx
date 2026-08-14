@@ -36,20 +36,20 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
   return (
     <header
       className={`sticky top-0 z-50 border-b ${
-        dark ? "bg-[#1c1c1c] border-white/10" : "bg-background border-[#cdcdcd]"
+        dark ? "bg-zentir-clay border-white/10" : "bg-background border-[#cdcdcd]"
       }`}
     >
-      <div className="max-w-300 mx-auto px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
+      <div className="max-w-300 mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+        <Link href="/" className="flex items-center shrink-0">
           <Image
             src="/images/logo.png"
             alt="Zentir"
             width={72}
             height={24}
-            className={`h-7 w-auto ${dark ? "brightness-0 invert" : ""}`}
+            className={`h-6 sm:h-7 w-auto shrink-0 ${dark ? "brightness-0 invert" : ""}`}
           />
         </Link>
-        <nav className="flex items-center gap-2">
+        <nav className="flex items-center gap-1 sm:gap-2 shrink-0">
           {user ? (
             <>
               {isAdmin && (
@@ -67,10 +67,18 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
             </>
           ) : (
             <>
-              <ButtonLink variant="ghost" href="/login" className={linkClass}>
+              <ButtonLink
+                variant="ghost"
+                href="/login"
+                className={`text-sm px-3 sm:px-4 py-1.5 rounded-full border bg-transparent transition-colors ${
+                  dark
+                    ? "border-white/30 text-white hover:bg-white/10 hover:border-zentir/60 hover:text-zentir"
+                    : "border-[#cdcdcd] text-[#404040] hover:bg-zinc-100 hover:border-zentir/60 hover:text-zentir"
+                }`}
+              >
                 {t.ingresar}
               </ButtonLink>
-              <ButtonLink href="/register" className="text-sm bg-zentir hover:bg-zentir/90 text-white px-4 py-1.5 rounded-full transition-colors">
+              <ButtonLink href="/register" className="text-sm bg-zentir hover:bg-zentir/90 text-white px-3 sm:px-4 py-1.5 rounded-full transition-colors">
                 {t.registrarse}
               </ButtonLink>
             </>

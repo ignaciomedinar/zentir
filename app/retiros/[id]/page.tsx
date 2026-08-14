@@ -30,7 +30,7 @@ export default async function RetiroPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1c1c1c] text-white">
+    <div className="min-h-screen flex flex-col bg-zentir-clay text-white">
       <Header user={user} isAdmin={isAdmin} variant="dark" />
 
       <main className="flex-1">

@@ -134,6 +134,15 @@
   }
 }
 
+.bg-zentir-clay {
+  background-color: #2b2622;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(255, 255, 255, 0.025), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 30%, rgba(0, 0, 0, 0.18), transparent 65%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(120, 90, 65, 0.08), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
 @keyframes testimonials-marquee {
   from {
     transform: translateX(0);

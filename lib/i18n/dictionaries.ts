@@ -109,7 +109,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       items: [
         {
           title: "Movimiento consciente",
-          desc: "Clases guiadas para todos los niveles. Un método creado por Maricoles que busca despertar tu energía, abrir el corazón y fortalecer el cuerpo. La combinación de todas, y ninguna disciplina.",
+          desc: "Clases guiadas para todos los niveles. Un método creado por Maricoles que busca despertar tu energía, abrir el corazón y fortalecer el cuerpo. Una fusión de distintas disciplinas de movimiento para despertar tu energía, fortalecer tu cuerpo y conectar contigo desde un lugar profundo.",
         },
         {
           title: "Comunidad genuina",
@@ -126,9 +126,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       attribution: "— Participante Zentir 2024",
     },
     testimonials: {
-      title: "Créanles a ellas, no a nosotros",
+      title: "Voces de Zentir",
       subtitle:
-        "Las experiencias de quienes se han unido a Zentir son nuestra columna vertebral. Su crecimiento personal es el pulso que nos mantiene vivos.",
+        "Las experiencias de quienes viven Zentir dan forma a lo que somos. Su crecimiento es el pulso que nos mantiene vivos.",
       items: [
         {
           quote:
@@ -188,8 +188,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       ctaSecondary: "Ya soy parte",
     },
     proximosRetiros: {
-      eyebrow: "Agenda",
-      title: "Próximos retiros",
+      eyebrow: "",
+      title: "Próximas experiencias",
       cta: "Quiero anotarme",
       verMas: "Ver más",
       dateLocale: "es-MX",
@@ -240,7 +240,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       items: [
         {
           title: "Conscious movement",
-          desc: "Guided classes for every level. A method created by Maricoles that seeks to awaken your energy, open your heart and strengthen your body. The combination of all disciplines, and none of them.",
+          desc: "Guided classes for every level. A method created by Maricoles that seeks to awaken your energy, open your heart and strengthen your body. A fusion of different movement disciplines to awaken your energy, strengthen your body and connect with yourself from a deep place.",
         },
         {
           title: "Genuine community",
@@ -257,9 +257,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       attribution: "— Zentir participant, 2024",
     },
     testimonials: {
-      title: "Believe them, not us",
+      title: "Voices of Zentir",
       subtitle:
-        "The experiences of those who've joined Zentir are our backbone. Their personal growth is the pulse that keeps us alive.",
+        "The experiences of those who live Zentir shape who we are. Their growth is the pulse that keeps us alive.",
       items: [
         {
           quote:
@@ -319,8 +319,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       ctaSecondary: "I'm already part of it",
     },
     proximosRetiros: {
-      eyebrow: "Schedule",
-      title: "Upcoming retreats",
+      eyebrow: "",
+      title: "Upcoming experiences",
       cta: "I want to sign up",
       verMas: "See more",
       dateLocale: "en-US",
