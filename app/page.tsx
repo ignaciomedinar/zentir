@@ -24,6 +24,12 @@ export default async function HomePage() {
     .gte("fecha_inicio", today)
     .order("fecha_inicio", { ascending: true });
 
+  const { data: studioContent } = await supabase
+    .from("studio_content")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(3);
+
   const initialLocale = await detectLocale();
 
   return (
@@ -31,6 +37,7 @@ export default async function HomePage() {
       user={user}
       isAdmin={isAdmin}
       proximosRetiros={proximosRetiros ?? []}
+      studioContent={studioContent ?? []}
       initialLocale={initialLocale}
     />
   );

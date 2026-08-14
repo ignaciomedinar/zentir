@@ -54,6 +54,7 @@ export interface Dictionary {
     paragraph: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    ctaVerMas: string;
   };
   proximosRetiros: {
     eyebrow: string;
@@ -185,6 +186,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       paragraph: "Prácticas, meditaciones y herramientas para volver a ti, estés donde estés.",
       ctaPrimary: "Quiero vivirlo",
       ctaSecondary: "Ya soy parte",
+      ctaVerMas: "Ver más",
     },
     proximosRetiros: {
       eyebrow: "",
@@ -315,6 +317,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       paragraph: "Practices, meditations and tools to come back to yourself, wherever you are.",
       ctaPrimary: "I want in",
       ctaSecondary: "I'm already part of it",
+      ctaVerMas: "See more",
     },
     proximosRetiros: {
       eyebrow: "",

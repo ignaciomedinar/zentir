@@ -1,6 +1,7 @@
 export type UserRole = "user" | "admin";
 export type ProfileType = "usuario" | "terapeuta";
 export type AccessLevel = "all" | "terapeuta";
+export type StudioContentType = "documento" | "podcast" | "publicacion";
 
 export type Database = {
   public: {
@@ -226,6 +227,45 @@ export type Database = {
           id?: string;
           user_id?: string;
           content_id?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      studio_content: {
+        Row: {
+          id: string;
+          titulo: string;
+          descripcion: string | null;
+          content_type: StudioContentType;
+          external_url: string | null;
+          file_url: string | null;
+          file_name: string | null;
+          file_size: number | null;
+          file_type: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          titulo: string;
+          descripcion?: string | null;
+          content_type: StudioContentType;
+          external_url?: string | null;
+          file_url?: string | null;
+          file_name?: string | null;
+          file_size?: number | null;
+          file_type?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          titulo?: string;
+          descripcion?: string | null;
+          content_type?: StudioContentType;
+          external_url?: string | null;
+          file_url?: string | null;
+          file_name?: string | null;
+          file_size?: number | null;
+          file_type?: string | null;
           created_at?: string;
         };
         Relationships: [];

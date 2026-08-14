@@ -4,9 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { Header } from "@/components/shared/header";
 import { ButtonLink } from "@/components/ui/button-link";
+import { StudioContentCard } from "@/components/shared/studio-content-card";
 import { Calendar, MapPin, Star } from "lucide-react";
 import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 import { LOCALE_COOKIE } from "@/lib/i18n/constants";
+import type { StudioContentType } from "@/lib/types/database";
 
 interface Retiro {
   id: string;
@@ -17,10 +19,20 @@ interface Retiro {
   lugar: string | null;
 }
 
+interface StudioItem {
+  id: string;
+  titulo: string;
+  descripcion: string | null;
+  content_type: StudioContentType;
+  external_url: string | null;
+  file_url: string | null;
+}
+
 interface LandingPageProps {
   user: { email?: string } | null;
   isAdmin: boolean;
   proximosRetiros: Retiro[];
+  studioContent: StudioItem[];
   initialLocale: Locale;
 }
 
@@ -33,7 +45,7 @@ function initials(name: string) {
     .join("");
 }
 
-export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: LandingPageProps) {
+export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, initialLocale }: LandingPageProps) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
   const t = dictionaries[locale];
 
@@ -344,6 +356,25 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
             />
           </div>
         </div>
+
+        {!!studioContent.length && (
+          <div className="max-w-[1200px] mx-auto mt-14">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {studioContent.map((item) => (
+                <StudioContentCard key={item.id} item={item} />
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <ButtonLink
+                href="/estudio"
+                variant="outline"
+                className="inline-flex border border-black/20 text-black hover:text-zentir hover:border-zentir/40 px-7 py-3 rounded-full text-sm font-medium transition-colors"
+              >
+                {t.memberTeaser.ctaVerMas}
+              </ButtonLink>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* CTA final */}
