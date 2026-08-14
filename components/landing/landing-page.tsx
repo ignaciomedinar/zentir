@@ -59,7 +59,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
           alt="Retiro Zentir"
           fill
           priority
-          className="object-cover object-[center_30%] sm:object-center"
+          className="object-cover object-[center_48%] sm:object-center"
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
@@ -99,13 +99,13 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
       {/* Intro */}
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto text-center space-y-5">
-          <p className="text-sm uppercase tracking-widest text-zentir font-medium">
+          <p className="text-sm uppercase tracking-widest text-zentir-warm font-medium">
             {t.intro.eyebrow}
           </p>
           <h2 className="text-[2.2rem] font-bold leading-tight">{t.intro.title}</h2>
           <p className="text-lg font-semibold text-white/90 pt-2">{t.intro.subheading}</p>
           <p className="text-white/60 leading-relaxed text-lg">{t.intro.paragraph}</p>
-          <p className="text-xs uppercase tracking-widest text-zentir pt-2">{t.intro.tags}</p>
+          <p className="text-xs uppercase tracking-widest text-zentir-warm pt-2">{t.intro.tags}</p>
         </div>
       </section>
 
@@ -207,7 +207,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
-                <h3 className="font-semibold text-xl mb-2 group-hover:text-zentir transition-colors">
+                <h3 className="font-semibold text-xl mb-2 group-hover:text-zentir-warm transition-colors">
                   {t.experience.items[i].title}
                 </h3>
                 <p className="text-white/60 leading-relaxed">{t.experience.items[i].desc}</p>
@@ -349,7 +349,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
       {/* CTA final */}
       <section className="py-28 px-6 text-center border-t border-white/10">
         <div className="max-w-2xl mx-auto space-y-6">
-          <p className="text-sm uppercase tracking-widest text-zentir font-medium">
+          <p className="text-sm uppercase tracking-widest text-zentir-warm font-medium">
             {t.ctaFinal.eyebrow}
           </p>
           <h2 className="text-[2.5rem] font-semibold leading-tight">{t.ctaFinal.title}</h2>
@@ -365,7 +365,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
               <ButtonLink
                 variant="outline"
                 href="/login"
-                className="border border-white/30 text-white hover:text-zentir hover:border-zentir/60 px-8 py-3.5 rounded-full text-sm font-medium transition-colors"
+                className="border border-white/30 text-white hover:text-zentir-warm hover:border-zentir-warm/60 px-8 py-3.5 rounded-full text-sm font-medium transition-colors"
               >
                 {t.ctaFinal.ctaLogin}
               </ButtonLink>
@@ -392,7 +392,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
         <p suppressHydrationWarning>© {new Date().getFullYear()} Zentir. {t.footer.rights}</p>
         <p className="mt-2">
           {t.footer.contact}{" "}
-          <a href="mailto:hola@venazentir.com" className="text-zentir hover:underline">
+          <a href="mailto:hola@venazentir.com" className="text-zentir-warm hover:underline">
             hola@venazentir.com
           </a>
         </p>

@@ -109,7 +109,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       items: [
         {
           title: "Movimiento consciente",
-          desc: "Clases guiadas para todos los niveles. Un método creado por Maricoles que busca despertar tu energía, abrir el corazón y fortalecer el cuerpo. Una fusión de distintas disciplinas de movimiento para despertar tu energía, fortalecer tu cuerpo y conectar contigo desde un lugar profundo.",
+          desc: "Zentir Movimiento es un método creado por Maricoles que fusiona distintas disciplinas en una práctica que fortalece, despierta y conecta. Multinivel y para todos, está diseñado para que te muevas con intención, abras espacio para lo que sientes y vuelvas a sentirte en casa dentro de tu cuerpo.",
         },
         {
           title: "Comunidad genuina",
@@ -127,8 +127,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     testimonials: {
       title: "Voces de Zentir",
-      subtitle:
-        "Las experiencias de quienes viven Zentir dan forma a lo que somos. Su crecimiento es el pulso que nos mantiene vivos.",
+      subtitle: "Su crecimiento es nuestro motivo. Sus experiencias forman parte de nuestro ADN.",
       items: [
         {
           quote:
@@ -240,7 +239,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       items: [
         {
           title: "Conscious movement",
-          desc: "Guided classes for every level. A method created by Maricoles that seeks to awaken your energy, open your heart and strengthen your body. A fusion of different movement disciplines to awaken your energy, strengthen your body and connect with yourself from a deep place.",
+          desc: "Zentir Movement is a method created by Maricoles that fuses different disciplines into a practice that strengthens, awakens and connects. Multi-level and for everyone, it's designed for you to move with intention, make space for what you feel, and come back home within your body.",
         },
         {
           title: "Genuine community",
@@ -258,8 +257,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     testimonials: {
       title: "Voices of Zentir",
-      subtitle:
-        "The experiences of those who live Zentir shape who we are. Their growth is the pulse that keeps us alive.",
+      subtitle: "Their growth is our reason why. Their experiences are part of our DNA.",
       items: [
         {
           quote:

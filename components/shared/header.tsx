@@ -46,7 +46,7 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
             alt="Zentir"
             width={72}
             height={24}
-            className={`h-6 sm:h-7 w-auto shrink-0 ${dark ? "brightness-0 invert" : ""}`}
+            className={`h-7 sm:h-7 w-auto shrink-0 ${dark ? "brightness-0 invert" : ""}`}
           />
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -66,13 +66,13 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
               </button>
             </>
           ) : (
-            <>
+            <div className="hidden sm:flex items-center gap-1 sm:gap-2">
               <ButtonLink
                 variant="ghost"
                 href="/login"
                 className={`text-sm px-3 sm:px-4 py-1.5 rounded-full border bg-transparent transition-colors ${
                   dark
-                    ? "border-white/30 text-white hover:bg-white/10 hover:border-zentir/60 hover:text-zentir"
+                    ? "border-white/30 text-white hover:bg-white/10 hover:border-zentir-warm/60 hover:text-zentir-warm"
                     : "border-[#cdcdcd] text-[#404040] hover:bg-zinc-100 hover:border-zentir/60 hover:text-zentir"
                 }`}
               >
@@ -81,7 +81,7 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
               <ButtonLink href="/register" className="text-sm bg-zentir hover:bg-zentir/90 text-white px-3 sm:px-4 py-1.5 rounded-full transition-colors">
                 {t.registrarse}
               </ButtonLink>
-            </>
+            </div>
           )}
           {onLocaleChange && (
             <div className={`ml-2 pl-2 border-l ${dark ? "border-white/10" : "border-[#e5e0da]"}`}>
