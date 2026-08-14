@@ -339,8 +339,8 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
                 </ButtonLink>
                 <ButtonLink
                   href="/login"
-                  variant="outline"
-                  className="inline-flex border border-black/20 text-black hover:text-zentir hover:border-zentir/40 px-7 py-3 rounded-full text-sm font-medium transition-colors"
+                  variant="ghost"
+                  className="inline-flex border bg-transparent border-black/20 text-black hover:bg-black/5 hover:text-zentir hover:border-zentir/40 px-7 py-3 rounded-full text-sm font-medium transition-colors"
                 >
                   {t.memberTeaser.ctaSecondary}
                 </ButtonLink>
@@ -359,16 +359,18 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
 
         {!!studioContent.length && (
           <div className="max-w-[1200px] mx-auto mt-14">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="flex flex-wrap justify-center gap-6">
               {studioContent.map((item) => (
-                <StudioContentCard key={item.id} item={item} />
+                <div key={item.id} className="w-full sm:w-[calc(50%-12px)] lg:w-90">
+                  <StudioContentCard item={item} />
+                </div>
               ))}
             </div>
             <div className="text-center mt-8">
               <ButtonLink
                 href="/estudio"
-                variant="outline"
-                className="inline-flex border border-black/20 text-black hover:text-zentir hover:border-zentir/40 px-7 py-3 rounded-full text-sm font-medium transition-colors"
+                variant="ghost"
+                className="inline-flex border bg-transparent border-black/20 text-black hover:bg-black/5 hover:text-zentir hover:border-zentir/40 px-7 py-3 rounded-full text-sm font-medium transition-colors"
               >
                 {t.memberTeaser.ctaVerMas}
               </ButtonLink>
@@ -394,9 +396,9 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
                 {t.ctaFinal.ctaJoin}
               </ButtonLink>
               <ButtonLink
-                variant="outline"
+                variant="ghost"
                 href="/login"
-                className="border border-white/30 text-white hover:text-zentir-warm hover:border-zentir-warm/60 px-8 py-3.5 rounded-full text-sm font-medium transition-colors"
+                className="border bg-transparent border-white/30 text-white hover:bg-white/10 hover:text-zentir-warm hover:border-zentir-warm/60 px-8 py-3.5 rounded-full text-sm font-medium transition-colors"
               >
                 {t.ctaFinal.ctaLogin}
               </ButtonLink>
