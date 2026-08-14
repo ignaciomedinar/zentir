@@ -59,7 +59,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, initialLocale }: L
           alt="Retiro Zentir"
           fill
           priority
-          className="object-cover object-[center_60%] sm:object-center"
+          className="object-cover object-[center_60%] sm:object-[center_75%]"
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
