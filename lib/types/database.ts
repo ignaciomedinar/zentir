@@ -1,7 +1,7 @@
 export type UserRole = "user" | "admin";
 export type ProfileType = "usuario" | "terapeuta";
 export type AccessLevel = "all" | "terapeuta";
-export type StudioContentType = "documento" | "podcast" | "publicacion";
+export type StudioContentType = "documento" | "podcast" | "publicacion" | "video";
 
 export type Database = {
   public: {

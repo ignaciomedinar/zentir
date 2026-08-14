@@ -16,6 +16,7 @@ const TYPE_OPTIONS: { value: StudioContentType; label: string }[] = [
   { value: "documento", label: "Documento" },
   { value: "podcast", label: "Podcast" },
   { value: "publicacion", label: "Publicación" },
+  { value: "video", label: "Video" },
 ];
 
 export function UploadStudioForm() {
@@ -176,7 +177,11 @@ export function UploadStudioForm() {
                 type="url"
                 value={form.externalUrl}
                 onChange={(e) => setForm((p) => ({ ...p, externalUrl: e.target.value }))}
-                placeholder="https://open.spotify.com/episode/..."
+                placeholder={
+                  contentType === "video"
+                    ? "https://youtube.com/watch?v=..."
+                    : "https://open.spotify.com/episode/..."
+                }
                 required
               />
             </div>

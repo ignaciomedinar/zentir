@@ -25,6 +25,7 @@ const TYPE_LABELS: Record<StudioContentType, string> = {
   documento: "Documento",
   podcast: "Podcast",
   publicacion: "Publicación",
+  video: "Video",
 };
 
 export function StudioTable({ contenido }: { contenido: StudioItem[] }) {

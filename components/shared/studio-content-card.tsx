@@ -1,4 +1,4 @@
-import { FileText, Headphones, Newspaper, ExternalLink, Download } from "lucide-react";
+import { FileText, Headphones, Newspaper, PlayCircle, ExternalLink, Download } from "lucide-react";
 import type { StudioContentType } from "@/lib/types/database";
 
 interface StudioItem {
@@ -14,12 +14,14 @@ const TYPE_ICON: Record<StudioContentType, typeof FileText> = {
   documento: FileText,
   podcast: Headphones,
   publicacion: Newspaper,
+  video: PlayCircle,
 };
 
 const TYPE_LABEL: Record<StudioContentType, string> = {
   documento: "Documento",
   podcast: "Podcast",
   publicacion: "Publicación",
+  video: "Video",
 };
 
 export function StudioContentCard({ item }: { item: StudioItem }) {
