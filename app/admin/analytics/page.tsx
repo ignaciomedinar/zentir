@@ -42,20 +42,21 @@ export default async function AdminAnalyticsPage() {
               {!summary.daily.length ? (
                 <p className="text-sm text-stone-400">Sin datos todavía.</p>
               ) : (
-                <div className="flex items-end gap-1 h-40 overflow-x-auto">
+                <div className="flex items-end gap-2.5 h-52 overflow-x-auto pb-1">
                   {summary.daily.map((d) => (
-                    <div key={d.date} className="flex flex-col items-center gap-1 shrink-0" title={`${d.date}: ${d.visitors}`}>
+                    <div key={d.date} className="flex flex-col items-center gap-1 shrink-0 w-7">
+                      <span className="text-[10px] text-stone-500 font-medium tabular-nums">{d.visitors}</span>
                       <div
                         className="w-3 bg-zentir/70 rounded-t"
                         style={{ height: `${Math.max(4, (d.visitors / maxDaily) * 130)}px` }}
                       />
+                      <span className="text-[10px] text-stone-400 tabular-nums [writing-mode:vertical-rl] rotate-180">
+                        {d.date.slice(0, 5)}
+                      </span>
                     </div>
                   ))}
                 </div>
               )}
-              <p className="text-xs text-stone-400 mt-2">
-                Pasa el cursor sobre cada barra para ver la fecha y el número de visitantes.
-              </p>
             </CardContent>
           </Card>
 

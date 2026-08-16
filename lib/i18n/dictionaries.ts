@@ -104,7 +104,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Qué es Zentir",
       title: "Una invitación a vivir con propósito,\ny sentir de verdad.",
       paragraph:
-        "Experiencias presenciales y virtuales para moverte, conectar y transformarte desde un lugar más consciente.",
+        "Experiencias presenciales y virtuales para moverte, conectar\ny transformarte desde un lugar más consciente.",
       tags: ["Movimiento", "Conexión", "Transformación"],
     },
     experience: {
@@ -134,7 +134,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     testimonials: {
       title: "Lo que nos mueve",
-      subtitle: "Su crecimiento es nuestro motivo\nSus experiencias forman parte de nuestro ADN.",
+      subtitle: "Su crecimiento es nuestro motivo.\nSus experiencias, parte de nuestro ADN.",
       items: [
         {
           quote:

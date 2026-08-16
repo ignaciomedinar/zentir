@@ -36,18 +36,32 @@ interface LandingPageProps {
   initialLocale: Locale;
 }
 
-const BIOS = [
-  {
-    name: "Lorena",
-    handle: null,
-    bio: "Mexicana, historiadora del arte, soñadora y emprendedora.\n\nEn 2022 viví una experiencia que me transformó para siempre: un retiro guiado por Maricoles. De ahí nació Zentir, un proyecto para crear espacios seguros donde reconectar, sanar y compartir desde lo auténtico.\n\nSoy fundadora de Greta, restaurantes de comida saludable en Madrid, donde busco que las personas se sientan mejor a través de la comida y de entornos que inspiran. Me encanta viajar, hacer ejercicio y compartir experiencias de transformación interior.",
-  },
-  {
-    name: "Maricoles",
-    handle: "María Medina",
-    bio: "Mexicana, coach de movimiento y guía de experiencias. Desde hace más de 11 años explora el movimiento como una puerta al autoconocimiento y la transformación. Su trabajo integra fitness, coaching, conexión mente-cuerpo y una espiritualidad aterrizada a la vida real. Haber vivido y trabajado en México, Madrid y Dubái ha enriquecido su mirada y su forma de acompañar a otros. A través de la bici, el mat y experiencias alrededor del mundo, crea espacios para sentir, conectar y crecer, llevando a cada experiencia la energía latina cálida, vibrante y humana que la caracteriza.",
-  },
-];
+const BIOS: Record<Locale, { name: string; handle: string | null; bio: string }[]> = {
+  es: [
+    {
+      name: "Lorena",
+      handle: "Lorena Rodríguez",
+      bio: "Mexicana, historiadora del arte, soñadora y emprendedora.\n\nEn 2022 viví una experiencia que me transformó para siempre: un retiro guiado por Maricoles. De ahí nació Zentir, un proyecto para crear espacios seguros donde reconectar, sanar y compartir desde lo auténtico.\n\nSoy fundadora de Greta, restaurantes de comida saludable en Madrid, donde busco que las personas se sientan mejor a través de la comida y de entornos que inspiran. Me encanta viajar, hacer ejercicio y compartir experiencias de transformación interior.",
+    },
+    {
+      name: "Maricoles",
+      handle: "María Medina",
+      bio: "Mexicana, coach de movimiento y guía de experiencias.\n\nDesde hace más de 11 años explora el movimiento como una puerta al autoconocimiento y la transformación. Su trabajo integra fitness, coaching, conexión mente-cuerpo y una espiritualidad aterrizada a la vida real.\n\nHaber vivido y trabajado en México, Madrid y Dubái ha enriquecido su mirada y su forma de acompañar a otros.\n\nA través de la bici, el mat y experiencias alrededor del mundo, crea espacios para sentir, conectar y crecer, llevando a cada experiencia la energía latina cálida, vibrante y humana que la caracteriza.",
+    },
+  ],
+  en: [
+    {
+      name: "Lorena",
+      handle: "Lorena Rodríguez",
+      bio: "Mexican, art historian, dreamer and entrepreneur.\n\nIn 2022 I lived an experience that transformed me forever: a retreat guided by Maricoles. That's how Zentir was born, a project to create safe spaces to reconnect, heal and share from an authentic place.\n\nI'm the founder of Greta, healthy-food restaurants in Madrid, where I want people to feel better through food and spaces that inspire. I love traveling, exercising and sharing experiences of inner transformation.",
+    },
+    {
+      name: "Maricoles",
+      handle: "María Medina",
+      bio: "Mexican, movement coach and experience guide.\n\nFor over 11 years she has explored movement as a gateway to self-knowledge and transformation. Her work blends fitness, coaching, mind-body connection and a spirituality grounded in real life.\n\nHaving lived and worked in Mexico, Madrid and Dubai has enriched her perspective and the way she guides others.\n\nThrough cycling, the mat and experiences around the world, she creates spaces to feel, connect and grow, bringing to every experience the warm, vibrant and human latin energy that defines her.",
+    },
+  ],
+};
 
 function initials(name: string) {
   return name
@@ -266,7 +280,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
             />
           </div>
           <div className="grid md:grid-cols-2 gap-10">
-            {BIOS.map((person) => (
+            {BIOS[locale].map((person) => (
               <div key={person.name} className="space-y-4">
                 <div>
                   <h3 className="text-xl font-semibold text-black">{person.name}</h3>
