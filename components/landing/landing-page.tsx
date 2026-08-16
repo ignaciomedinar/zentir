@@ -494,6 +494,9 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
             hola@venazentir.com
           </a>
         </p>
+        <p className="mt-2">
+          <a href="/privacidad" className="hover:underline">Aviso de privacidad</a>
+        </p>
       </footer>
     </div>
   );

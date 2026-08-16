@@ -29,6 +29,7 @@ function RegisterForm() {
     apellido: "",
     perfil_tipo: "" as ProfileType | "",
   });
+  const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
 
   function handleChange(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -38,6 +39,10 @@ function RegisterForm() {
     e.preventDefault();
     if (!form.perfil_tipo) {
       toast.error("Por favor selecciona tu perfil");
+      return;
+    }
+    if (!aceptaPrivacidad) {
+      toast.error("Debes aceptar el aviso de privacidad para continuar");
       return;
     }
     setLoading(true);
@@ -139,6 +144,21 @@ function RegisterForm() {
                 </SelectContent>
               </Select>
             </div>
+            <label className="flex items-start gap-2 text-sm text-stone-600">
+              <input
+                type="checkbox"
+                checked={aceptaPrivacidad}
+                onChange={(e) => setAceptaPrivacidad(e.target.checked)}
+                className="mt-0.5 shrink-0"
+                required
+              />
+              <span>
+                He leído y acepto el{" "}
+                <Link href="/privacidad" target="_blank" className="text-stone-800 font-medium hover:underline">
+                  aviso de privacidad
+                </Link>
+              </span>
+            </label>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Creando cuenta..." : "Crear cuenta"}
             </Button>
