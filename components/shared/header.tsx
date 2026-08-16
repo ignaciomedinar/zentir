@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ButtonLink } from "@/components/ui/button-link";
-import { User } from "lucide-react";
+import { User, LogOut, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
@@ -30,8 +30,8 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
   }
 
   const linkClass = dark
-    ? "text-sm text-white/70 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors"
-    : "text-sm text-[#737373] hover:text-black px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors";
+    ? "text-sm text-white/70 hover:text-white px-2 sm:px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors"
+    : "text-sm text-[#737373] hover:text-black px-2 sm:px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors";
 
   return (
     <header
@@ -53,16 +53,18 @@ export function Header({ user, isAdmin, locale = "es", onLocaleChange, variant =
           {user ? (
             <>
               {isAdmin && (
-                <ButtonLink variant="ghost" href="/admin" className={linkClass}>
-                  {t.panelAdmin}
+                <ButtonLink variant="ghost" href="/admin" className={linkClass} title={t.panelAdmin}>
+                  <LayoutDashboard className="w-4 h-4 sm:hidden" />
+                  <span className="hidden sm:inline">{t.panelAdmin}</span>
                 </ButtonLink>
               )}
-              <ButtonLink variant="ghost" href="/biblioteca" className={`${linkClass} flex items-center gap-1`}>
+              <ButtonLink variant="ghost" href="/biblioteca" className={`${linkClass} flex items-center gap-1`} title={t.biblioteca}>
                 <User className="w-3.5 h-3.5" />
-                {t.biblioteca}
+                <span className="hidden sm:inline">{t.biblioteca}</span>
               </ButtonLink>
-              <button onClick={handleLogout} className={linkClass}>
-                {t.salir}
+              <button onClick={handleLogout} className={linkClass} title={t.salir}>
+                <LogOut className="w-4 h-4 sm:hidden" />
+                <span className="hidden sm:inline">{t.salir}</span>
               </button>
             </>
           ) : (

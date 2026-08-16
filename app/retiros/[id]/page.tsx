@@ -21,7 +21,7 @@ export default async function RetiroPage({ params }: { params: Promise<{ id: str
 
   const { data: retiro } = await supabase
     .from("retiros")
-    .select("id, nombre, descripcion, descripcion_detallada, fecha_inicio, fecha_fin, lugar, precio, moneda, imagen_portada")
+    .select("id, nombre, descripcion, descripcion_detallada, fecha_inicio, fecha_fin, lugar, precio, moneda, imagen_portada, link_pago")
     .eq("id", id)
     .single();
 
@@ -95,7 +95,20 @@ export default async function RetiroPage({ params }: { params: Promise<{ id: str
             </p>
           )}
 
-          <InscribirseButton retiroId={retiro.id} isSignedIn={!!user} />
+          <div className="flex flex-wrap gap-3">
+            {retiro.link_pago ? (
+              <a
+                href={retiro.link_pago}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center bg-zentir hover:bg-zentir/90 text-white px-8 py-3 rounded-full text-sm font-medium transition-colors"
+              >
+                Reservar mi lugar
+              </a>
+            ) : (
+              <InscribirseButton retiroId={retiro.id} isSignedIn={!!user} />
+            )}
+          </div>
         </div>
       </main>
     </div>

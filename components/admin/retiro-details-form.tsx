@@ -25,6 +25,7 @@ interface Retiro {
   precio: number | null;
   moneda: string;
   imagen_portada: string | null;
+  link_pago: string | null;
 }
 
 export function RetiroDetailsForm({ retiro }: { retiro: Retiro }) {
@@ -40,6 +41,7 @@ export function RetiroDetailsForm({ retiro }: { retiro: Retiro }) {
     precio: retiro.precio != null ? String(retiro.precio) : "",
     moneda: retiro.moneda ?? "MXN",
     imagen_portada: retiro.imagen_portada ?? "",
+    link_pago: retiro.link_pago ?? "",
   });
 
   async function handleSubmit(e: React.FormEvent) {
@@ -62,6 +64,7 @@ export function RetiroDetailsForm({ retiro }: { retiro: Retiro }) {
         precio: form.precio ? Number(form.precio) : null,
         moneda: form.moneda,
         imagen_portada: form.imagen_portada.trim() || null,
+        link_pago: form.link_pago.trim() || null,
       })
       .eq("id", retiro.id);
 
@@ -168,6 +171,19 @@ export function RetiroDetailsForm({ retiro }: { retiro: Retiro }) {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="link_pago">Link de pago (opcional)</Label>
+            <Input
+              id="link_pago"
+              type="url"
+              value={form.link_pago}
+              onChange={(e) => setForm((p) => ({ ...p, link_pago: e.target.value }))}
+              placeholder="Ej: https://wetravel.com/trips/..."
+            />
+            <p className="text-xs text-stone-400">
+              Si lo llenas, aparece un botón &ldquo;Reservar mi lugar&rdquo; en la página del retiro que lleva directo a este link.
+            </p>
           </div>
           <RetiroImageUpload
             value={form.imagen_portada}

@@ -54,6 +54,7 @@ export type Database = {
           precio: number | null;
           moneda: string;
           imagen_portada: string | null;
+          link_pago: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -68,6 +69,7 @@ export type Database = {
           precio?: number | null;
           moneda?: string;
           imagen_portada?: string | null;
+          link_pago?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -82,6 +84,7 @@ export type Database = {
           precio?: number | null;
           moneda?: string;
           imagen_portada?: string | null;
+          link_pago?: string | null;
           created_at?: string;
           updated_at?: string;
         };

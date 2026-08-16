@@ -27,6 +27,7 @@ export function RetiroForm() {
     precio: "",
     moneda: "MXN",
     imagen_portada: "",
+    link_pago: "",
   });
 
   async function handleSubmit(e: React.FormEvent) {
@@ -47,6 +48,7 @@ export function RetiroForm() {
       precio: form.precio ? Number(form.precio) : null,
       moneda: form.moneda,
       imagen_portada: form.imagen_portada.trim() || null,
+      link_pago: form.link_pago.trim() || null,
     });
 
     if (error) {
@@ -63,6 +65,7 @@ export function RetiroForm() {
         precio: "",
         moneda: "MXN",
         imagen_portada: "",
+        link_pago: "",
       });
       router.refresh();
     }
@@ -164,6 +167,19 @@ export function RetiroForm() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="link_pago">Link de pago (opcional)</Label>
+            <Input
+              id="link_pago"
+              type="url"
+              value={form.link_pago}
+              onChange={(e) => setForm((p) => ({ ...p, link_pago: e.target.value }))}
+              placeholder="Ej: https://wetravel.com/trips/..."
+            />
+            <p className="text-xs text-stone-400">
+              Si lo llenas, aparece un botón &ldquo;Reservar mi lugar&rdquo; en la página del retiro que lleva directo a este link.
+            </p>
           </div>
           <RetiroImageUpload
             value={form.imagen_portada}

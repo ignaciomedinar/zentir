@@ -36,6 +36,19 @@ interface LandingPageProps {
   initialLocale: Locale;
 }
 
+const BIOS = [
+  {
+    name: "Lorena",
+    handle: null,
+    bio: "Mexicana, historiadora del arte, soñadora y emprendedora.\n\nEn 2022 viví una experiencia que me transformó para siempre: un retiro guiado por Maricoles. De ahí nació Zentir, un proyecto para crear espacios seguros donde reconectar, sanar y compartir desde lo auténtico.\n\nSoy fundadora de Greta, restaurantes de comida saludable en Madrid, donde busco que las personas se sientan mejor a través de la comida y de entornos que inspiran. Me encanta viajar, hacer ejercicio y compartir experiencias de transformación interior.",
+  },
+  {
+    name: "Maricoles",
+    handle: "María Medina",
+    bio: "Mexicana, coach de movimiento y guía de experiencias. Desde hace más de 11 años explora el movimiento como una puerta al autoconocimiento y la transformación. Su trabajo integra fitness, coaching, conexión mente-cuerpo y una espiritualidad aterrizada a la vida real. Haber vivido y trabajado en México, Madrid y Dubái ha enriquecido su mirada y su forma de acompañar a otros. A través de la bici, el mat y experiencias alrededor del mundo, crea espacios para sentir, conectar y crecer, llevando a cada experiencia la energía latina cálida, vibrante y humana que la caracteriza.",
+  },
+];
+
 function initials(name: string) {
   return name
     .split(" ")
@@ -114,10 +127,16 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
           <p className="text-sm uppercase tracking-widest text-zentir-warm font-medium">
             {t.intro.eyebrow}
           </p>
-          <h2 className="text-[2.2rem] font-bold leading-tight">{t.intro.title}</h2>
-          <p className="text-lg font-semibold text-white/90 pt-2">{t.intro.subheading}</p>
-          <p className="text-white/60 leading-relaxed text-lg">{t.intro.paragraph}</p>
-          <p className="text-xs uppercase tracking-widest text-zentir-warm pt-2">{t.intro.tags}</p>
+          <h2 className="text-[2.2rem] font-bold leading-tight whitespace-pre-line">{t.intro.title}</h2>
+          <p className="text-white/60 leading-relaxed text-lg whitespace-pre-line">{t.intro.paragraph}</p>
+          <p className="text-xs uppercase tracking-widest text-zentir-warm pt-2">
+            {t.intro.tags.map((tag, i) => (
+              <span key={tag}>
+                {i > 0 && <span className="text-base align-middle mx-2">·</span>}
+                {tag}
+              </span>
+            ))}
+          </p>
         </div>
       </section>
 
@@ -229,6 +248,37 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
         </div>
       </section>
 
+      {/* Bios */}
+      <section className="py-24 px-6 bg-[#faf8f6] border-t border-white/10">
+        <div className="max-w-250 mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-sm uppercase tracking-widest text-zentir font-medium mb-3">
+              {t.bios.eyebrow}
+            </p>
+            <h2 className="text-[2.2rem] font-semibold leading-tight text-black">{t.bios.title}</h2>
+          </div>
+          <div className="relative h-100 sm:h-125 rounded-[16px] overflow-hidden mb-12">
+            <Image
+              src="/images/founders.jpeg"
+              alt="María (Maricoles) y Lorena"
+              fill
+              className="object-cover object-[center_20%]"
+            />
+          </div>
+          <div className="grid md:grid-cols-2 gap-10">
+            {BIOS.map((person) => (
+              <div key={person.name} className="space-y-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-black">{person.name}</h3>
+                  {person.handle && <p className="text-sm text-zentir">{person.handle}</p>}
+                </div>
+                <p className="text-[#737373] leading-relaxed whitespace-pre-line">{person.bio}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Quote / Atmosphere */}
       <section className="relative py-32 px-6 overflow-hidden">
         <Image
@@ -251,7 +301,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-semibold tracking-[-0.03em] text-black">{t.testimonials.title}</h2>
-            <p className="text-xl text-[#737373] max-w-3xl mx-auto mt-6">{t.testimonials.subtitle}</p>
+            <p className="text-xl text-[#737373] max-w-3xl mx-auto mt-6 whitespace-pre-line text-balance">{t.testimonials.subtitle}</p>
           </div>
         </div>
         <div className="relative" style={{ height: 280 }}>
@@ -294,7 +344,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-[2rem] font-semibold">{t.gallery.title}</h2>
-            <p className="text-white/60 mt-2">{t.gallery.subtitle}</p>
+            {!!t.gallery.subtitle && <p className="text-white/60 mt-2">{t.gallery.subtitle}</p>}
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {[

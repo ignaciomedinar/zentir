@@ -64,7 +64,7 @@ export function ContentTable({ contenido }: { contenido: ContentItem[] }) {
 
   return (
     <>
-      <div className="rounded-lg border overflow-hidden bg-white">
+      <div className="rounded-lg border overflow-x-auto bg-white">
         <Table>
           <TableHeader>
             <TableRow className="bg-stone-50">

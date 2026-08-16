@@ -27,13 +27,16 @@ export interface Dictionary {
   intro: {
     eyebrow: string;
     title: string;
-    subheading: string;
     paragraph: string;
-    tags: string;
+    tags: string[];
   };
   experience: {
     title: string;
     items: { title: string; desc: string }[];
+  };
+  bios: {
+    eyebrow: string;
+    title: string;
   };
   quote: {
     text: string;
@@ -99,11 +102,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     intro: {
       eyebrow: "Qué es Zentir",
-      title: "Una invitación a vivir con propósito y sentir de verdad.",
-      subheading: "Viajes con propósito",
+      title: "Una invitación a vivir con propósito,\ny sentir de verdad.",
       paragraph:
         "Experiencias presenciales y virtuales para moverte, conectar y transformarte desde un lugar más consciente.",
-      tags: "Movimiento · Conexión · Transformación",
+      tags: ["Movimiento", "Conexión", "Transformación"],
     },
     experience: {
       title: "Qué vives en Zentir",
@@ -122,13 +124,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         },
       ],
     },
+    bios: {
+      eyebrow: "Quiénes somos",
+      title: "Detrás de Zentir",
+    },
     quote: {
       text: "El retiro me dio permiso de parar, de sentir y de volver a ser yo.",
       attribution: "— Participante Zentir 2024",
     },
     testimonials: {
-      title: "Voces de Zentir",
-      subtitle: "Su crecimiento es nuestro motivo. Sus experiencias forman parte de nuestro ADN.",
+      title: "Lo que nos mueve",
+      subtitle: "Su crecimiento es nuestro motivo\nSus experiencias forman parte de nuestro ADN.",
       items: [
         {
           quote:
@@ -230,14 +236,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     intro: {
       eyebrow: "What is Zentir",
-      title: "An invitation to live with purpose and truly feel.",
-      subheading: "Journeys with purpose",
+      title: "An invitation to live with purpose\nand truly feel.",
       paragraph:
-        "In-person and virtual experiences to move, connect and transform from a more conscious place.",
-      tags: "Movement · Connection · Transformation",
+        "In-person and virtual experiences to move, connect and transform\nfrom a more conscious place.",
+      tags: ["Movement", "Connection", "Transformation"],
     },
     experience: {
-      title: "What you live in Zentir",
+      title: "What you experience in Zentir",
       items: [
         {
           title: "Conscious movement",
@@ -245,13 +250,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         },
         {
           title: "Genuine community",
-          desc: "Spaces to share, deep conversations and encounters that let us connect for real and build bonds that go beyond the experience.",
+          desc: "Spaces to share, have deep conversations, and connect through meaningful encounters that create bonds beyond the experience.",
         },
         {
           title: "Transformation",
           desc: "Experiences that invite you to look within, question yourself, and take home tangible tools that transform the way you live, feel and relate to yourself.",
         },
       ],
+    },
+    bios: {
+      eyebrow: "Who we are",
+      title: "Behind Zentir",
     },
     quote: {
       text: "The retreat gave me permission to stop, to feel, and to become myself again.",
@@ -309,7 +318,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     gallery: {
       title: "Moments that stayed with us",
-      subtitle: "Gallery of Zentir experiences",
+      subtitle: "",
     },
     memberTeaser: {
       eyebrow: "Zentir Studio",
