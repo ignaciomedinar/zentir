@@ -98,9 +98,10 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
           alt="Retiro Zentir"
           fill
           priority
-          className="object-cover object-[center_60%] sm:object-[center_75%]"
+          className="object-cover object-[center_15%] sm:object-[center_75%]"
         />
         <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-linear-to-t from-[#3A2C28] to-transparent" />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
           <h1 className="text-5xl md:text-[4.5rem] font-semibold leading-tight text-white mb-10">
             {t.hero.titlePre}
