@@ -3,6 +3,7 @@ import { Calendar, MapPin, Tag } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/shared/header";
 import { InscribirseButton } from "@/components/retiros/inscribirse-button";
+import { formatDateRange } from "@/lib/utils";
 
 export default async function RetiroPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -52,21 +53,7 @@ export default async function RetiroPage({ params }: { params: Promise<{ id: str
             {retiro.fecha_inicio && (
               <span className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-zentir shrink-0" />
-                {new Date(retiro.fecha_inicio + "T00:00:00").toLocaleDateString("es-MX", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-                {retiro.fecha_fin && (
-                  <>
-                    {" – "}
-                    {new Date(retiro.fecha_fin + "T00:00:00").toLocaleDateString("es-MX", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </>
-                )}
+                {formatDateRange(retiro.fecha_inicio, retiro.fecha_fin, "es")}
               </span>
             )}
             {retiro.lugar && (

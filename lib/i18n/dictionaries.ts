@@ -64,7 +64,6 @@ export interface Dictionary {
     title: string;
     cta: string;
     verMas: string;
-    dateLocale: string;
   };
   ctaFinal: {
     eyebrow: string;
@@ -199,7 +198,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Próximas experiencias",
       cta: "Quiero anotarme",
       verMas: "Ver más",
-      dateLocale: "es-MX",
     },
     ctaFinal: {
       eyebrow: "Ven a Zentir",
@@ -333,7 +331,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Upcoming experiences",
       cta: "I want to sign up",
       verMas: "See more",
-      dateLocale: "en-US",
     },
     ctaFinal: {
       eyebrow: "Come to Zentir",

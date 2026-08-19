@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type SVGProps } from "react";
 import Image from "next/image";
 import { Header } from "@/components/shared/header";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -8,6 +8,7 @@ import { StudioContentCard } from "@/components/shared/studio-content-card";
 import { Calendar, MapPin, Star } from "lucide-react";
 import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 import { LOCALE_COOKIE } from "@/lib/i18n/constants";
+import { formatDateRange } from "@/lib/utils";
 import type { StudioContentType } from "@/lib/types/database";
 
 interface Retiro {
@@ -36,7 +37,10 @@ interface LandingPageProps {
   initialLocale: Locale;
 }
 
-const BIOS: Record<Locale, { name: string; handle: string | null; bio: string }[]> = {
+const BIOS: Record<
+  Locale,
+  { name: string; handle: string | null; bio: string; instagram?: string; youtube?: string }[]
+> = {
   es: [
     {
       name: "Lorena",
@@ -46,7 +50,9 @@ const BIOS: Record<Locale, { name: string; handle: string | null; bio: string }[
     {
       name: "Maricoles",
       handle: "María Medina",
-      bio: "Mexicana, coach de movimiento y guía de experiencias.\n\nDesde hace más de 11 años explora el movimiento como una puerta al autoconocimiento y la transformación. Su trabajo integra fitness, coaching, conexión mente-cuerpo y una espiritualidad aterrizada a la vida real.\n\nHaber vivido y trabajado en México, Madrid y Dubái ha enriquecido su mirada y su forma de acompañar a otros.\n\nA través de la bici, el mat y experiencias alrededor del mundo, crea espacios para sentir, conectar y crecer, llevando a cada experiencia la energía latina cálida, vibrante y humana que la caracteriza.",
+      bio: "Mexicana, coach de movimiento y guía de experiencias de bienestar.\n\nDesde hace más de 11 años exploro el movimiento como una puerta al autoconocimiento y la transformación. Mi trabajo integra fitness, coaching, conexión mente-cuerpo y una espiritualidad aterrizada a la vida real.\n\nHaber vivido y trabajado en México, Madrid y Dubái ha enriquecido mi mirada y mi forma de acompañar a otros.\n\nA través de la bici, el mat y experiencias alrededor del mundo, creo espacios para sentir, conectar y crecer, integrando una energía latina cálida, vibrante y profundamente humana.",
+      instagram: "https://www.instagram.com/maricoles/",
+      youtube: "https://www.youtube.com/@turecreopodcast974",
     },
   ],
   en: [
@@ -58,10 +64,31 @@ const BIOS: Record<Locale, { name: string; handle: string | null; bio: string }[
     {
       name: "Maricoles",
       handle: "María Medina",
-      bio: "Mexican, movement coach and experience guide.\n\nFor over 11 years she has explored movement as a gateway to self-knowledge and transformation. Her work blends fitness, coaching, mind-body connection and a spirituality grounded in real life.\n\nHaving lived and worked in Mexico, Madrid and Dubai has enriched her perspective and the way she guides others.\n\nThrough cycling, the mat and experiences around the world, she creates spaces to feel, connect and grow, bringing to every experience the warm, vibrant and human latin energy that defines her.",
+      bio: "Mexican, movement coach and wellness experience guide.\n\nFor over 11 years I've explored movement as a gateway to self-knowledge and transformation. My work blends fitness, coaching, mind-body connection and a spirituality grounded in real life.\n\nHaving lived and worked in Mexico, Madrid and Dubai has enriched my perspective and the way I guide others.\n\nThrough cycling, the mat and experiences around the world, I create spaces to feel, connect and grow, bringing a warm, vibrant and deeply human latin energy to every experience.",
+      instagram: "https://www.instagram.com/maricoles/",
+      youtube: "https://www.youtube.com/@turecreopodcast974",
     },
   ],
 };
+
+function InstagramIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
+function YoutubeIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+      <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+    </svg>
+  );
+}
 
 function initials(name: string) {
   return name
@@ -195,19 +222,7 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
                   <div className="flex flex-col gap-1.5 text-[#737373]">
                     <span className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-zentir shrink-0" />
-                      {new Date(r.fecha_inicio + "T00:00:00").toLocaleDateString(
-                        t.proximosRetiros.dateLocale,
-                        { day: "numeric", month: "long", year: "numeric" }
-                      )}
-                      {r.fecha_fin && (
-                        <>
-                          {" – "}
-                          {new Date(r.fecha_fin + "T00:00:00").toLocaleDateString(
-                            t.proximosRetiros.dateLocale,
-                            { day: "numeric", month: "long", year: "numeric" }
-                          )}
-                        </>
-                      )}
+                      {formatDateRange(r.fecha_inicio!, r.fecha_fin, locale)}
                     </span>
                     {r.lugar && (
                       <span className="flex items-center gap-2">
@@ -288,6 +303,32 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
                   {person.handle && <p className="text-sm text-zentir">{person.handle}</p>}
                 </div>
                 <p className="text-[#737373] leading-relaxed whitespace-pre-line">{person.bio}</p>
+                {(person.instagram || person.youtube) && (
+                  <div className="flex items-center gap-3">
+                    {person.instagram && (
+                      <a
+                        href={person.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Instagram"
+                        className="w-9 h-9 flex items-center justify-center rounded-full bg-zentir/10 text-zentir hover:bg-zentir/20 transition-colors"
+                      >
+                        <InstagramIcon className="w-4 h-4" />
+                      </a>
+                    )}
+                    {person.youtube && (
+                      <a
+                        href={person.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="YouTube"
+                        className="w-9 h-9 flex items-center justify-center rounded-full bg-zentir/10 text-zentir hover:bg-zentir/20 transition-colors"
+                      >
+                        <YoutubeIcon className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>

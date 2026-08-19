@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { RetiroForm } from "@/components/admin/retiro-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Palmtree, ChevronRight, Calendar, MapPin } from "lucide-react";
+import { formatDateRange } from "@/lib/utils";
 
 export default async function AdminRetirosPage() {
   const supabase = await createClient();
@@ -48,21 +49,7 @@ export default async function AdminRetirosPage() {
                         {r.fecha_inicio && (
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            {new Date(r.fecha_inicio + "T00:00:00").toLocaleDateString("es-MX", {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            })}
-                            {r.fecha_fin && (
-                              <>
-                                {" – "}
-                                {new Date(r.fecha_fin + "T00:00:00").toLocaleDateString("es-MX", {
-                                  day: "numeric",
-                                  month: "long",
-                                  year: "numeric",
-                                })}
-                              </>
-                            )}
+                            {formatDateRange(r.fecha_inicio, r.fecha_fin, "es")}
                           </span>
                         )}
                         {r.lugar && (
