@@ -39,7 +39,7 @@ interface LandingPageProps {
 
 const BIOS: Record<
   Locale,
-  { name: string; handle: string | null; bio: string; instagram?: string; youtube?: string }[]
+  { name: string; handle: string | null; bio: string; instagram?: string }[]
 > = {
   es: [
     {
@@ -52,7 +52,6 @@ const BIOS: Record<
       handle: "María Medina",
       bio: "Mexicana, coach de movimiento y guía de experiencias de bienestar.\n\nDesde hace más de 11 años exploro el movimiento como una puerta al autoconocimiento y la transformación. Mi trabajo integra fitness, coaching, conexión mente-cuerpo y una espiritualidad aterrizada a la vida real.\n\nHaber vivido y trabajado en México, Madrid y Dubái ha enriquecido mi mirada y mi forma de acompañar a otros.\n\nA través de la bici, el mat y experiencias alrededor del mundo, creo espacios para sentir, conectar y crecer, integrando una energía latina cálida, vibrante y profundamente humana.",
       instagram: "https://www.instagram.com/maricoles/",
-      youtube: "https://www.youtube.com/@turecreopodcast974",
     },
   ],
   en: [
@@ -66,7 +65,6 @@ const BIOS: Record<
       handle: "María Medina",
       bio: "Mexican, movement coach and wellness experience guide.\n\nFor over 11 years I've explored movement as a gateway to self-knowledge and transformation. My work blends fitness, coaching, mind-body connection and a spirituality grounded in real life.\n\nHaving lived and worked in Mexico, Madrid and Dubai has enriched my perspective and the way I guide others.\n\nThrough cycling, the mat and experiences around the world, I create spaces to feel, connect and grow, bringing a warm, vibrant and deeply human latin energy to every experience.",
       instagram: "https://www.instagram.com/maricoles/",
-      youtube: "https://www.youtube.com/@turecreopodcast974",
     },
   ],
 };
@@ -303,30 +301,17 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
                   {person.handle && <p className="text-sm text-zentir">{person.handle}</p>}
                 </div>
                 <p className="text-[#737373] leading-relaxed whitespace-pre-line">{person.bio}</p>
-                {(person.instagram || person.youtube) && (
+                {person.instagram && (
                   <div className="flex items-center gap-3">
-                    {person.instagram && (
-                      <a
-                        href={person.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Instagram"
-                        className="w-9 h-9 flex items-center justify-center rounded-full bg-zentir/10 text-zentir hover:bg-zentir/20 transition-colors"
-                      >
-                        <InstagramIcon className="w-4 h-4" />
-                      </a>
-                    )}
-                    {person.youtube && (
-                      <a
-                        href={person.youtube}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="YouTube"
-                        className="w-9 h-9 flex items-center justify-center rounded-full bg-zentir/10 text-zentir hover:bg-zentir/20 transition-colors"
-                      >
-                        <YoutubeIcon className="w-4 h-4" />
-                      </a>
-                    )}
+                    <a
+                      href={person.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      className="w-9 h-9 flex items-center justify-center rounded-full bg-zentir/10 text-zentir hover:bg-zentir/20 transition-colors"
+                    >
+                      <InstagramIcon className="w-4 h-4" />
+                    </a>
                   </div>
                 )}
               </div>
@@ -528,6 +513,26 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
           height={28}
           className="mx-auto mb-4 opacity-60 brightness-0 invert"
         />
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <a
+            href="https://www.instagram.com/ven.a.zentir/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram Zentir"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors"
+          >
+            <InstagramIcon className="w-4 h-4" />
+          </a>
+          <a
+            href="https://www.youtube.com/@turecreopodcast974"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube Zentir"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors"
+          >
+            <YoutubeIcon className="w-4 h-4" />
+          </a>
+        </div>
         <p suppressHydrationWarning>© {new Date().getFullYear()} Zentir. {t.footer.rights}</p>
         <p className="mt-2">
           {t.footer.contact}{" "}
