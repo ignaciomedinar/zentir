@@ -5,18 +5,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ButtonLink } from "@/components/ui/button-link";
 import { toast } from "sonner";
+import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 
 export function InscribirseButton({
   retiroId,
   isSignedIn,
+  locale = "es",
 }: {
   retiroId: string;
   isSignedIn: boolean;
+  locale?: Locale;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [inscrito, setInscrito] = useState(false);
+  const t = dictionaries[locale].inscribirse;
 
   async function inscribir() {
     setLoading(true);
@@ -50,7 +54,7 @@ export function InscribirseButton({
   if (inscrito) {
     return (
       <Button disabled className="bg-zentir/50 text-white px-8 py-3 rounded-full">
-        Ya estás inscrito/a
+        {t.yaInscrito}
       </Button>
     );
   }
@@ -62,7 +66,7 @@ export function InscribirseButton({
         href={`/register?next=${encodeURIComponent(next)}`}
         className="inline-flex bg-zentir hover:bg-zentir/90 text-white px-8 py-3 rounded-full text-sm font-medium"
       >
-        Quiero anotarme
+        {t.quieroAnotarme}
       </ButtonLink>
     );
   }
@@ -73,7 +77,7 @@ export function InscribirseButton({
       disabled={loading}
       className="bg-zentir hover:bg-zentir/90 text-white px-8 py-3 rounded-full text-sm font-medium"
     >
-      {loading ? "Anotando..." : "Quiero anotarme"}
+      {loading ? t.anotando : t.quieroAnotarme}
     </Button>
   );
 }

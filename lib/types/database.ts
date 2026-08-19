@@ -46,11 +46,15 @@ export type Database = {
         Row: {
           id: string;
           nombre: string;
+          nombre_en: string | null;
           descripcion: string | null;
+          descripcion_en: string | null;
           descripcion_detallada: string | null;
+          descripcion_detallada_en: string | null;
           fecha_inicio: string | null;
           fecha_fin: string | null;
           lugar: string | null;
+          lugar_en: string | null;
           precio: number | null;
           moneda: string;
           imagen_portada: string | null;
@@ -61,11 +65,15 @@ export type Database = {
         Insert: {
           id?: string;
           nombre: string;
+          nombre_en?: string | null;
           descripcion?: string | null;
+          descripcion_en?: string | null;
           descripcion_detallada?: string | null;
+          descripcion_detallada_en?: string | null;
           fecha_inicio?: string | null;
           fecha_fin?: string | null;
           lugar?: string | null;
+          lugar_en?: string | null;
           precio?: number | null;
           moneda?: string;
           imagen_portada?: string | null;
@@ -76,11 +84,15 @@ export type Database = {
         Update: {
           id?: string;
           nombre?: string;
+          nombre_en?: string | null;
           descripcion?: string | null;
+          descripcion_en?: string | null;
           descripcion_detallada?: string | null;
+          descripcion_detallada_en?: string | null;
           fecha_inicio?: string | null;
           fecha_fin?: string | null;
           lugar?: string | null;
+          lugar_en?: string | null;
           precio?: number | null;
           moneda?: string;
           imagen_portada?: string | null;

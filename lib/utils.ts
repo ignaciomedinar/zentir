@@ -5,6 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function pickLocalized<T>(es: T, en: T | null | undefined, locale: "es" | "en"): T {
+  if (locale === "en" && en) return en;
+  return es;
+}
+
 export function formatDateRange(
   fechaInicio: string,
   fechaFin: string | null,

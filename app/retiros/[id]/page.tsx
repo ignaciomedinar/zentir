@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
-import { Calendar, MapPin, Tag } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Header } from "@/components/shared/header";
-import { InscribirseButton } from "@/components/retiros/inscribirse-button";
-import { formatDateRange } from "@/lib/utils";
+import { detectLocale } from "@/lib/i18n/locale";
+import { RetiroDetail } from "@/components/retiros/retiro-detail";
 
 export default async function RetiroPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,7 +20,9 @@ export default async function RetiroPage({ params }: { params: Promise<{ id: str
 
   const { data: retiro } = await supabase
     .from("retiros")
-    .select("id, nombre, descripcion, descripcion_detallada, fecha_inicio, fecha_fin, lugar, precio, moneda, imagen_portada, link_pago")
+    .select(
+      "id, nombre, nombre_en, descripcion, descripcion_en, descripcion_detallada, descripcion_detallada_en, fecha_inicio, fecha_fin, lugar, lugar_en, precio, moneda, imagen_portada, link_pago"
+    )
     .eq("id", id)
     .single();
 
@@ -30,74 +30,7 @@ export default async function RetiroPage({ params }: { params: Promise<{ id: str
     notFound();
   }
 
-  return (
-    <div className="min-h-screen flex flex-col bg-zentir-clay text-white">
-      <Header user={user} isAdmin={isAdmin} variant="dark" />
+  const initialLocale = await detectLocale();
 
-      <main className="flex-1">
-        {retiro.imagen_portada && (
-          <div className="w-full h-80 sm:h-105">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={retiro.imagen_portada}
-              alt={retiro.nombre}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-
-        <div className="max-w-200 mx-auto px-6 py-14">
-          <h1 className="text-3xl sm:text-4xl font-semibold mb-4">{retiro.nombre}</h1>
-
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-white/60 mb-8">
-            {retiro.fecha_inicio && (
-              <span className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-zentir shrink-0" />
-                {formatDateRange(retiro.fecha_inicio, retiro.fecha_fin, "es")}
-              </span>
-            )}
-            {retiro.lugar && (
-              <span className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-zentir shrink-0" />
-                {retiro.lugar}
-              </span>
-            )}
-            {retiro.precio != null && (
-              <span className="flex items-center gap-2">
-                <Tag className="w-4 h-4 text-zentir shrink-0" />
-                {retiro.precio.toLocaleString("es-MX")} {retiro.moneda}
-              </span>
-            )}
-          </div>
-
-          {retiro.descripcion && (
-            <p className="text-lg text-white/90 leading-relaxed whitespace-pre-wrap mb-6">
-              {retiro.descripcion}
-            </p>
-          )}
-
-          {retiro.descripcion_detallada && (
-            <p className="text-white/60 leading-relaxed whitespace-pre-wrap mb-10">
-              {retiro.descripcion_detallada}
-            </p>
-          )}
-
-          <div className="flex flex-wrap gap-3">
-            {retiro.link_pago ? (
-              <a
-                href={retiro.link_pago}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center bg-zentir hover:bg-zentir/90 text-white px-8 py-3 rounded-full text-sm font-medium transition-colors"
-              >
-                Reservar mi lugar
-              </a>
-            ) : (
-              <InscribirseButton retiroId={retiro.id} isSignedIn={!!user} />
-            )}
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+  return <RetiroDetail user={user} isAdmin={isAdmin} retiro={retiro} initialLocale={initialLocale} />;
 }

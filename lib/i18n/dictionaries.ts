@@ -80,6 +80,14 @@ export interface Dictionary {
   languageSwitcher: {
     label: string;
   };
+  retiroDetail: {
+    reservar: string;
+  };
+  inscribirse: {
+    yaInscrito: string;
+    quieroAnotarme: string;
+    anotando: string;
+  };
 }
 
 export const dictionaries: Record<Locale, Dictionary> = {
@@ -215,6 +223,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
     languageSwitcher: {
       label: "Idioma",
     },
+    retiroDetail: {
+      reservar: "Reservar mi lugar",
+    },
+    inscribirse: {
+      yaInscrito: "Ya estás inscrito/a",
+      quieroAnotarme: "Quiero anotarme",
+      anotando: "Anotando...",
+    },
   },
   en: {
     header: {
@@ -347,6 +363,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     languageSwitcher: {
       label: "Language",
+    },
+    retiroDetail: {
+      reservar: "Reserve my spot",
+    },
+    inscribirse: {
+      yaInscrito: "You're already registered",
+      quieroAnotarme: "I want to sign up",
+      anotando: "Signing up...",
     },
   },
 };

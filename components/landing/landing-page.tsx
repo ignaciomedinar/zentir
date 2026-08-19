@@ -8,16 +8,19 @@ import { StudioContentCard } from "@/components/shared/studio-content-card";
 import { Calendar, MapPin, Star } from "lucide-react";
 import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 import { LOCALE_COOKIE } from "@/lib/i18n/constants";
-import { formatDateRange } from "@/lib/utils";
+import { formatDateRange, pickLocalized } from "@/lib/utils";
 import type { StudioContentType } from "@/lib/types/database";
 
 interface Retiro {
   id: string;
   nombre: string;
+  nombre_en: string | null;
   descripcion: string | null;
+  descripcion_en: string | null;
   fecha_inicio: string | null;
   fecha_fin: string | null;
   lugar: string | null;
+  lugar_en: string | null;
 }
 
 interface StudioItem {
@@ -211,35 +214,40 @@ export function LandingPage({ user, isAdmin, proximosRetiros, studioContent, ini
               </h2>
             </div>
             <div className="grid sm:grid-cols-2 gap-6">
-              {proximosRetiros.map((r) => (
-                <div
-                  key={r.id}
-                  className="rounded-[12px] border border-[#e5e0da] bg-[#faf8f6] p-7 flex flex-col gap-3"
-                >
-                  <h3 className="text-xl font-semibold text-black">{r.nombre}</h3>
-                  <div className="flex flex-col gap-1.5 text-[#737373]">
-                    <span className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-zentir shrink-0" />
-                      {formatDateRange(r.fecha_inicio!, r.fecha_fin, locale)}
-                    </span>
-                    {r.lugar && (
-                      <span className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-zentir shrink-0" />
-                        {r.lugar}
-                      </span>
-                    )}
-                  </div>
-                  {r.descripcion && (
-                    <p className="text-[#737373] leading-relaxed">{r.descripcion}</p>
-                  )}
-                  <ButtonLink
-                    href={`/retiros/${r.id}`}
-                    className="inline-flex self-start mt-2 bg-zentir hover:bg-zentir/90 text-white px-6 py-2.5 rounded-full text-sm font-medium"
+              {proximosRetiros.map((r) => {
+                const nombre = pickLocalized(r.nombre, r.nombre_en, locale);
+                const descripcion = pickLocalized(r.descripcion, r.descripcion_en, locale);
+                const lugar = pickLocalized(r.lugar, r.lugar_en, locale);
+                return (
+                  <div
+                    key={r.id}
+                    className="rounded-[12px] border border-[#e5e0da] bg-[#faf8f6] p-7 flex flex-col gap-3"
                   >
-                    {t.proximosRetiros.verMas}
-                  </ButtonLink>
-                </div>
-              ))}
+                    <h3 className="text-xl font-semibold text-black">{nombre}</h3>
+                    <div className="flex flex-col gap-1.5 text-[#737373]">
+                      <span className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-zentir shrink-0" />
+                        {formatDateRange(r.fecha_inicio!, r.fecha_fin, locale)}
+                      </span>
+                      {lugar && (
+                        <span className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-zentir shrink-0" />
+                          {lugar}
+                        </span>
+                      )}
+                    </div>
+                    {descripcion && (
+                      <p className="text-[#737373] leading-relaxed">{descripcion}</p>
+                    )}
+                    <ButtonLink
+                      href={`/retiros/${r.id}`}
+                      className="inline-flex self-start mt-2 bg-zentir hover:bg-zentir/90 text-white px-6 py-2.5 rounded-full text-sm font-medium"
+                    >
+                      {t.proximosRetiros.verMas}
+                    </ButtonLink>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

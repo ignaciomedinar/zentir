@@ -19,7 +19,7 @@ export default async function HomePage() {
   const today = new Date().toISOString().slice(0, 10);
   const { data: proximosRetiros } = await supabase
     .from("retiros")
-    .select("id, nombre, descripcion, fecha_inicio, fecha_fin, lugar")
+    .select("id, nombre, nombre_en, descripcion, descripcion_en, fecha_inicio, fecha_fin, lugar, lugar_en")
     .not("fecha_inicio", "is", null)
     .gte("fecha_inicio", today)
     .order("fecha_inicio", { ascending: true });
